@@ -1062,21 +1062,11 @@ const categories = await Promise.all(
 				card.style.setProperty('--mouse-y', `${((clientY - rect.top) / rect.height) * 100}%`);
 			}
 
+			const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+
 			function attachSpotlight(card: HTMLElement) {
+				if (isTouchDevice) return;
 				card.addEventListener('mousemove', (e: MouseEvent) => applySpotlight(card, e.clientX, e.clientY));
-				card.addEventListener('touchmove', (e: TouchEvent) => {
-					e.preventDefault();
-					applySpotlight(card, e.touches[0].clientX, e.touches[0].clientY);
-				}, { passive: false });
-				card.addEventListener('touchstart', (e: TouchEvent) => {
-					applySpotlight(card, e.touches[0].clientX, e.touches[0].clientY);
-					card.classList.add('touching');
-				}, { passive: true });
-				card.addEventListener('touchend', () => {
-					card.classList.remove('touching');
-					card.style.setProperty('--mouse-x', '50%');
-					card.style.setProperty('--mouse-y', '50%');
-				});
 			}
 
 			document.querySelectorAll<HTMLElement>('.card').forEach(attachSpotlight);
