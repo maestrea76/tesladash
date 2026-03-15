@@ -126,17 +126,17 @@ categories:
       # Spain
       - name: Iberdrola SmartCharge
         url: https://smartcharge.iberdrola.es
-        logo: https://cdn.simpleicons.org/iberdrola/00A650
+        logo: /logos/iberdrola.svg
         color: "#00A650"
         regions: ['ES']
       - name: Endesa X Way
         url: https://www.endesaxway.com
-        logo: https://cdn.simpleicons.org/endesa/009999"
+        logo: /logos/endesa-x.png
         color: "#00B4AA"
         regions: ['ES']
       - name: Zunder
         url: https://zunder.com
-        logo: /logos/zunder.png
+        logo: /logos/zunder.svg
         color: "#FF6B00"
         regions: ['ES']
       # France
@@ -158,7 +158,7 @@ categories:
         regions: ['DE', 'AT', 'CH']
       - name: IONITY
         url: https://ionity.eu
-        logo: /logos/ionity.png
+        logo: /logos/Ionity.svg
         color: "#FF4B00"
         regions: ['DE', 'AT', 'CH', 'FR', 'BE', 'NL', 'ES', 'PT', 'NO', 'SE', 'DK', 'FI', 'PL', 'IT', 'GB', 'IE']
       # Netherlands + Belgium
