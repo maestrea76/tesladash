@@ -117,9 +117,9 @@
 
 <div class="launcher" class:has-error={error}>
 	<div class="input-wrap">
-		<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-			<circle cx="11" cy="11" r="8" />
-			<path d="m21 21-4.35-4.35" />
+		<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+			<circle cx="12" cy="12" r="10"/>
+			<path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
 		</svg>
 		<input
 			type="url"
