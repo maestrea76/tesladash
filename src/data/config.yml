@@ -134,64 +134,64 @@ categories:
       # United States
       - name: Blink Charging
         url: https://www.blinkcharging.com
-        logo: https://cdn.simpleicons.org/blink/0068FF
+        logo: /logos/blink-charging.svg
         color: "#0068FF"
         fullscreen: false
         regions: ['US']
       - name: ChargePoint
         url: https://www.chargepoint.com
-        logo: https://cdn.simpleicons.org/chargepoint/0078D4
+        logo: /logos/chargepoint.svg
         color: "#0078D4"
         fullscreen: false
         regions: ['US', 'CA']
       - name: Electrify America
         url: https://www.electrifyamerica.com
-        logo: https://cdn.simpleicons.org/electrifyamerica/5A2D82
+        logo: /logos/electrify-america.svg
         color: "#5A2D82"
         fullscreen: false
         regions: ['US']
       - name: EVgo
         url: https://www.evgo.com
-        logo: https://cdn.simpleicons.org/evgo/00A651
+        logo: /logos/evgo.svg
         color: "#00A651"
         fullscreen: false
         regions: ['US']
       # Canada
       - name: FLO
         url: https://flo.com
-        logo: https://cdn.simpleicons.org/flo/00A550
+        logo: /logos/flo.svg
         color: "#00A550"
         fullscreen: false
         regions: ['CA']
       # Australia
       - name: Chargefox
         url: https://www.chargefox.com
-        logo: https://cdn.simpleicons.org/chargefox/F26522
+        logo: /logos/chargefox.svg
         color: "#F26522"
         fullscreen: false
         regions: ['AU']
       - name: Evie Networks
         url: https://evienetworks.com.au
-        logo: https://cdn.simpleicons.org/evienetworks/00B2A9
+        logo: /logos/evie-networks.svg
         color: "#00B2A9"
         fullscreen: false
         regions: ['AU']
       - name: NRMA Charging
         url: https://www.mynrma.com.au/electric-vehicles/charging
-        logo: https://cdn.simpleicons.org/nrma/E31837
+        logo: /logos/nrma-charging.svg
         color: "#E31837"
         fullscreen: false
         regions: ['AU']
       # China
       - name: State Grid EV
         url: https://www.evcs.com.cn
-        logo: https://cdn.simpleicons.org/stategrid/006DB8
+        logo: /logos/state-grid-ev.svg
         color: "#006DB8"
         fullscreen: false
         regions: ['CN']
       - name: TELD
         url: https://www.teld.cn
-        logo: https://cdn.simpleicons.org/teld/00A651
+        logo: /logos/teld.svg
         color: "#00A651"
         fullscreen: false
         regions: ['CN']
@@ -237,33 +237,33 @@ categories:
       # Italy
       - name: Be Charge
         url: https://www.becharge.it
-        logo: https://cdn.simpleicons.org/becharge/0033A0
+        logo: /logos/be-charge.svg
         color: "#0033A0"
         fullscreen: false
         regions: ['IT']
       - name: Enel X Way
         url: https://www.enelxway.com
-        logo: https://cdn.simpleicons.org/enelxway/00A651
+        logo: /logos/enel-x-way.svg
         color: "#00A651"
         fullscreen: false
         regions: ['IT', 'ES', 'PT', 'DE', 'FR', 'NL', 'BE', 'CH']
       # Ireland
       - name: ESB eCars
         url: https://www.esb.ie/esb-ecars
-        logo: https://cdn.simpleicons.org/esb/003DA5
+        logo: /logos/esb-ecars.svg
         color: "#003DA5"
         fullscreen: false
         regions: ['IE']
       # Portugal
       - name: EDP Charge
         url: https://edpcharge.pt
-        logo: https://cdn.simpleicons.org/edp/E31837
+        logo: /logos/edp-charge.svg
         color: "#E31837"
         fullscreen: false
         regions: ['PT']
       - name: Galp EV
         url: https://www.galp.com/corp/en/drivers/electric-mobility
-        logo: https://cdn.simpleicons.org/galp/FF6600
+        logo: /logos/galp-ev.svg
         color: "#FF6600"
         fullscreen: false
         regions: ['PT']
