@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/logos/tesdash.webp" alt="Tesdash" width="400" />
+  <img src="public/logos/tesdash-black.webp" alt="Tesdash" width="400" />
 </p>
 
 <p align="center">
@@ -7,12 +7,11 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/github/license/crstian19/tesdash?style=for-the-badge&logo=opensourceinitiative&logoColor=white" />
-  <img src="https://img.shields.io/github/actions/workflow/status/crstian19/tesdash/docker.yml?style=for-the-badge&logo=githubactions&logoColor=white&label=Docker+Build" />
   <img src="https://img.shields.io/badge/Astro-5-FF5D01?style=for-the-badge&logo=astro&logoColor=white" />
   <img src="https://img.shields.io/badge/Svelte-5-FF3E00?style=for-the-badge&logo=svelte&logoColor=white" />
   <img src="https://img.shields.io/badge/Tailwind-4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" />
-  <img src="https://img.shields.io/badge/Bun-runtime-000000?style=for-the-badge&logo=bun&logoColor=white" />
+  <img src="https://img.shields.io/github/actions/workflow/status/crstian19/tesdash/docker.yml?style=for-the-badge&logo=githubactions&logoColor=white&label=Docker+Build" />
+  <img src="https://img.shields.io/github/license/crstian19/tesdash?style=for-the-badge&logo=opensourceinitiative&logoColor=white" />
 </p>
 
 ---
