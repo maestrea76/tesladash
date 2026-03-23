@@ -641,11 +641,11 @@ const categories = await Promise.all(
 			<canvas id="owner-canvas" aria-hidden="true"></canvas>
 			<div class="modal-box owner-modal-box" role="dialog" aria-modal="true">
 				<div class="owner-modal-icon" aria-hidden="true">👋</div>
-				<h2 class="owner-modal-title">¿Eres Cristian?</h2>
-				<p class="owner-modal-sub">Esta zona es privada.</p>
+				<h2 class="owner-modal-title" data-i18n="owner.title">¿Eres Cristian?</h2>
+				<p class="owner-modal-sub" data-i18n="owner.sub">Esta zona es privada.</p>
 				<div class="owner-modal-actions">
-					<button class="owner-btn-yes" id="owner-yes">Sí, soy yo</button>
-					<button class="owner-btn-no" id="owner-no">No</button>
+					<button class="owner-btn-yes" id="owner-yes" data-i18n="owner.yes">Sí, soy yo</button>
+					<button class="owner-btn-no" id="owner-no" data-i18n="owner.no">No</button>
 				</div>
 			</div>
 		</div>
@@ -718,6 +718,10 @@ const categories = await Promise.all(
 					'locale.all': 'All',
 					'locale.lang-desc': 'Changes the interface language across the whole dashboard.',
 					'locale.country-desc': "Filters apps to show only those available in your country. Detected automatically from your car's location.",
+				'owner.title': 'Are you Cristian?',
+				'owner.sub': 'This area is private.',
+				'owner.yes': 'Yes, that\'s me',
+				'owner.no': 'No',
 				},
 				no: {
 					'btn.about': 'Om',
@@ -771,6 +775,10 @@ const categories = await Promise.all(
 				'locale.all': 'Alle',
 				'locale.lang-desc': 'Endrer grensesnittspråket på hele dashbordet.',
 				'locale.country-desc': 'Filtrerer apper for å vise bare de som er tilgjengelige i ditt land. Oppdages automatisk fra bilens posisjon.',
+				'owner.title': 'Er du Cristian?',
+				'owner.sub': 'Dette området er privat.',
+				'owner.yes': 'Ja, det er meg',
+				'owner.no': 'Nei',
 				},
 				de: {
 					'btn.about': 'Über',
@@ -824,6 +832,10 @@ const categories = await Promise.all(
 				'locale.all': 'Alle',
 				'locale.lang-desc': 'Ändert die Sprache der gesamten Oberfläche.',
 				'locale.country-desc': 'Filtert Apps, um nur die in deinem Land verfügbaren anzuzeigen. Wird automatisch über den Standort deines Autos erkannt.',
+				'owner.title': 'Bist du Cristian?',
+				'owner.sub': 'Dieser Bereich ist privat.',
+				'owner.yes': 'Ja, ich bin\'s',
+				'owner.no': 'Nein',
 				},
 				sv: {
 					'btn.about': 'Om',
@@ -877,6 +889,10 @@ const categories = await Promise.all(
 				'locale.all': 'Alla',
 				'locale.lang-desc': 'Ändrar gränssnittsspråket för hela dashbordet.',
 				'locale.country-desc': 'Filtrerar appar för att visa enbart de tillgängliga i ditt land. Identifieras automatiskt från bilens plats.',
+				'owner.title': 'Är du Cristian?',
+				'owner.sub': 'Det här området är privat.',
+				'owner.yes': 'Ja, det är jag',
+				'owner.no': 'Nej',
 				},
 				nl: {
 					'btn.about': 'Over',
@@ -930,6 +946,10 @@ const categories = await Promise.all(
 				'locale.all': 'Alle',
 				'locale.lang-desc': 'Wijzigt de interfacetaal van het hele dashboard.',
 				'locale.country-desc': 'Filtert apps om alleen die beschikbaar in jouw land te tonen. Automatisch gedetecteerd op basis van de locatie van je auto.',
+				'owner.title': 'Ben jij Cristian?',
+				'owner.sub': 'Dit gebied is privé.',
+				'owner.yes': 'Ja, dat ben ik',
+				'owner.no': 'Nee',
 				},
 				fr: {
 					'btn.about': 'À propos',
@@ -983,6 +1003,10 @@ const categories = await Promise.all(
 				'locale.all': 'Tous',
 				'locale.lang-desc': "Change la langue de l'interface sur tout le tableau de bord.",
 				'locale.country-desc': "Filtre les apps pour n'afficher que celles disponibles dans ton pays. Détecté automatiquement depuis la position de ta voiture.",
+				'owner.title': 'Es-tu Cristian ?',
+				'owner.sub': 'Cette zone est privée.',
+				'owner.yes': 'Oui, c\'est moi',
+				'owner.no': 'Non',
 				},
 				da: {
 					'btn.about': 'Om',
@@ -1036,6 +1060,10 @@ const categories = await Promise.all(
 				'locale.all': 'Alle',
 				'locale.lang-desc': 'Ændrer grænsefladsproget på hele dashboardet.',
 				'locale.country-desc': 'Filtrerer apps for kun at vise dem, der er tilgængelige i dit land. Registreres automatisk fra bilens placering.',
+				'owner.title': 'Er du Cristian?',
+				'owner.sub': 'Dette område er privat.',
+				'owner.yes': 'Ja, det er mig',
+				'owner.no': 'Nej',
 				},
 				fi: {
 					'btn.about': 'Tietoja',
@@ -1089,6 +1117,10 @@ const categories = await Promise.all(
 				'locale.all': 'Kaikki',
 				'locale.lang-desc': 'Muuttaa koko käyttöliittymän kielen.',
 				'locale.country-desc': 'Suodattaa sovellukset näyttämään vain maassasi saatavilla olevat. Havaitaan automaattisesti autosi sijainnista.',
+				'owner.title': 'Oletko Cristian?',
+				'owner.sub': 'Tämä alue on yksityinen.',
+				'owner.yes': 'Kyllä, olen minä',
+				'owner.no': 'Ei',
 				},
 				it: {
 					'btn.about': 'Info',
@@ -1142,6 +1174,10 @@ const categories = await Promise.all(
 				'locale.all': 'Tutti',
 				'locale.lang-desc': "Cambia la lingua dell'interfaccia su tutto il dashboard.",
 				'locale.country-desc': 'Filtra le app per mostrare solo quelle disponibili nel tuo paese. Rilevato automaticamente dalla posizione della tua auto.',
+				'owner.title': 'Sei Cristian?',
+				'owner.sub': "Quest'area è privata.",
+				'owner.yes': 'Sì, sono io',
+				'owner.no': 'No',
 				},
 				es: {
 					'btn.about': 'Acerca de',
@@ -1195,6 +1231,10 @@ const categories = await Promise.all(
 				'locale.all': 'Todos',
 				'locale.lang-desc': 'Cambia el idioma de la interfaz en todo el panel.',
 				'locale.country-desc': 'Filtra las apps para mostrar solo las disponibles en tu país. Se detecta automáticamente desde la ubicación de tu coche.',
+				'owner.title': '¿Eres Cristian?',
+				'owner.sub': 'Esta zona es privada.',
+				'owner.yes': 'Sí, soy yo',
+				'owner.no': 'No',
 				},
 				pt: {
 					'btn.about': 'Sobre',
@@ -1248,6 +1288,10 @@ const categories = await Promise.all(
 				'locale.all': 'Todos',
 				'locale.lang-desc': 'Muda o idioma da interface em todo o painel.',
 				'locale.country-desc': 'Filtra apps para mostrar apenas as disponíveis no teu país. Detetado automaticamente pela localização do teu carro.',
+				'owner.title': 'És o Cristian?',
+				'owner.sub': 'Esta área é privada.',
+				'owner.yes': 'Sim, sou eu',
+				'owner.no': 'Não',
 				},
 				pl: {
 					'btn.about': 'O nas',
@@ -1301,6 +1345,10 @@ const categories = await Promise.all(
 				'locale.all': 'Wszystkie',
 				'locale.lang-desc': 'Zmienia język interfejsu całego dashboardu.',
 				'locale.country-desc': 'Filtruje aplikacje, aby pokazać tylko te dostępne w twoim kraju. Wykrywane automatycznie na podstawie lokalizacji twojego samochodu.',
+				'owner.title': 'Jesteś Cristian?',
+				'owner.sub': 'Ten obszar jest prywatny.',
+				'owner.yes': 'Tak, to ja',
+				'owner.no': 'Nie',
 				},
 				zh: {
 					'btn.about': '关于',
@@ -1354,6 +1402,10 @@ const categories = await Promise.all(
 				'locale.all': '全部',
 				'locale.lang-desc': '更改整个仪表板的界面语言。',
 				'locale.country-desc': '过滤应用，仅显示您所在国家/地区可用的应用。根据您车辆的位置自动检测。',
+				'owner.title': '你是 Cristian 吗？',
+				'owner.sub': '此区域是私密的。',
+				'owner.yes': '是的，是我',
+				'owner.no': '不是',
 				},
 			};
 
