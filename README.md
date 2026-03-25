@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Astro-5-FF5D01?style=for-the-badge&logo=astro&logoColor=white" />
+  <img src="https://img.shields.io/badge/Astro-6-FF5D01?style=for-the-badge&logo=astro&logoColor=white" />
   <img src="https://img.shields.io/badge/Svelte-5-FF3E00?style=for-the-badge&logo=svelte&logoColor=white" />
   <img src="https://img.shields.io/badge/Tailwind-4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" />
   <img src="https://img.shields.io/github/actions/workflow/status/crstian19/tesdash/docker.yml?style=for-the-badge&logo=githubactions&logoColor=white&label=Docker+Build" />
@@ -30,7 +30,7 @@ This is applied automatically at build time — you just add URLs to the config 
 
 | Layer | Technology |
 |---|---|
-| Framework | Astro 5 (SSG) |
+| Framework | Astro 6 (SSG) |
 | Interactive islands | Svelte 5 (Clock, URL Launcher) |
 | Styling | Tailwind CSS 4 + DaisyUI 5 |
 | Config | YAML parsed at build time with `js-yaml` |
