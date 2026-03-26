@@ -26,7 +26,7 @@ categories:
         logo: https://cdn.simpleicons.org/hbo/A020F0
       - name: Mitele
         url: https://www.mitele.es
-        logo: /logos/mitele.svg
+        logo: /logos/mitele.webp
         color: "#E63324"
         invert: true
         regions: ['ES']
