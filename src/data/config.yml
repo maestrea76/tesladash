@@ -12,7 +12,7 @@ categories:
         logo: https://www.google.com/s2/favicons?domain=elpais.com&sz=128
       - name: Google
         url: https://www.google.com
-        logo: https://cdn.simpleicons.org/google
+        logo: /logos/google-g.png
       - name: Google Maps
         url: https://maps.google.com
         logo: /logos/googleMaps.svg
@@ -40,26 +40,26 @@ categories:
     apps:
       - name: Excel
         url: https://www.office.com/launch/excel
-        logo: /logos/excel.svg
+        logo: https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Microsoft_Office_Excel_%282019%E2%80%932025%29.svg/330px-Microsoft_Office_Excel_%282019%E2%80%932025%29.svg.png
         color: "#185C37"
       - name: Family Link
         url: https://families.google.com
-        logo: https://www.google.com/s2/favicons?domain=families.google.com&sz=128
+        logo: https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Google_Family_Link_Child_and_Teen_Logo_I.svg/250px-Google_Family_Link_Child_and_Teen_Logo_I.svg.png
       - name: Gmail
         url: https://mail.google.com
         logo: /logos/gmail.svg
         color: "#EA4335"
       - name: Home Assistant
         url: https://yourHA:8123
-        logo: /logos/homeassistant.svg
+        logo: https://cdn.simpleicons.org/homeassistant/41BDF5
         color: "#41BDF5"
       - name: Outlook
         url: https://outlook.live.com
-        logo: /logos/outlook.svg
+        logo: https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Microsoft_Outlook_Icon_%282025%E2%80%93present%29.svg/330px-Microsoft_Outlook_Icon_%282025%E2%80%93present%29.svg.png
         color: "#0078D4"
       - name: Teams
         url: https://teams.microsoft.com
-        logo: /logos/teams.svg
+        logo: https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Microsoft_Office_Teams_%282025%E2%80%93present%29.svg/250px-Microsoft_Office_Teams_%282025%E2%80%93present%29.svg.png
         color: "#5059C9"
       - name: Telegram
         url: https://web.telegram.org
@@ -71,7 +71,7 @@ categories:
         color: "#25D366"
       - name: Word
         url: https://www.office.com/launch/word
-        logo: /logos/word.svg
+        logo: https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Microsoft_Office_Word_%282019%E2%80%93present%29.svg/330px-Microsoft_Office_Word_%282019%E2%80%93present%29.svg.png
         color: "#103F91"
 
   - name: EV
@@ -253,7 +253,8 @@ categories:
     apps:
       - name: ChatGPT
         url: https://chatgpt.com
-        logo: https://cdn.simpleicons.org/openai
+        logo: https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/ChatGPT-Logo.svg/500px-ChatGPT-Logo.svg.png
+        color: "#10A37F"
       - name: Claude
         url: https://claude.ai
         logo: https://www.google.com/s2/favicons?domain=claude.ai&sz=128
@@ -266,15 +267,27 @@ categories:
 
   - name: Streaming
     apps:
+      - name: DAZN
+        url: https://www.dazn.com
+        logo: https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/DAZN_logo.svg/250px-DAZN_logo.svg.png
+        color: "#F8FF00"
+        regions: ['DE', 'AT', 'CH', 'IT', 'ES', 'US', 'CA', 'JP']
       - name: Disney+
         url: https://www.disneyplus.com
-        logo: /logos/disneyplus.webp
+        logo: https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Disney%2B_logo.svg/330px-Disney%2B_logo.svg.png
+        color: "#113CCF"
+      - name: F1 TV
+        url: https://f1tv.formula1.com
+        logo: /logos/f1tv.webp
+        color: "#E10600"
+        regions: ['US', 'CA', 'AU', 'FR', 'BE', 'ES', 'PT', 'NO', 'SE', 'DK', 'FI', 'PL']
       - name: Max
         url: https://www.max.com
         logo: /logos/hbo.svg
       - name: Netflix
         url: https://www.netflix.com
         logo: /logos/netflix.svg
+        color: "#E50914"
       - name: OrangeTV
         url: https://orangetv.orange.es/brw
         logo: https://www.google.com/s2/favicons?domain=orangetv.orange.es&sz=128
@@ -291,26 +304,12 @@ categories:
     apps:
       - name: Amazon
         url: https://www.amazon.es
-        logo: https://cdn.simpleicons.org/amazon/FF9900
-      - name: DAZN
-        url: https://www.dazn.com
-        logo: /logos/dazn.svg
-        color: "#ffff00"
-        regions: ['DE', 'AT', 'CH', 'IT', 'ES', 'US', 'CA', 'JP']
-      - name: Eurosport
-        url: https://www.eurosport.com
-        logo: /logos/eurosport.webp
-        color: "#003DA5"
-        scale: 1.5
-        regions: ['DE', 'AT', 'CH', 'FR', 'BE', 'NL', 'ES', 'PT', 'IT', 'NO', 'SE', 'DK', 'FI', 'PL', 'GB', 'IE']
-      - name: F1 TV
-        url: https://f1tv.formula1.com
-        logo: /logos/f1tv.webp
-        color: "#E10600"
-        regions: ['US', 'CA', 'AU', 'FR', 'BE', 'ES', 'PT', 'NO', 'SE', 'DK', 'FI', 'PL']
+        logo: https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Amazon_icon.svg/500px-Amazon_icon.svg.png
+        color: "#FF9900"
       - name: GeForce Now
         url: https://play.geforcenow.com
         logo: /logos/nvidia.svg
       - name: Xbox Cloud
         url: https://www.xbox.com/play
-        logo: /logos/xbox-cloud.webp
+        logo: /logos/xbox.png
+        color: "#107C10"
