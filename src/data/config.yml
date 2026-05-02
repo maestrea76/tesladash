@@ -71,7 +71,7 @@ categories:
         color: "#25D366"
       - name: Word
         url: https://www.office.com/launch/word
-        logo: https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Microsoft_Office_Word_%282019%E2%80%93present%29.svg/330px-Microsoft_Office_Word_%282019%E2%80%93present%29.svg.png
+        logo: https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Microsoft_Office_Word_%282025%E2%80%93present%29.svg/250px-Microsoft_Office_Word_%282025%E2%80%93present%29.svg.png
         color: "#103F91"
 
   - name: EV
@@ -269,7 +269,7 @@ categories:
     apps:
       - name: DAZN
         url: https://www.dazn.com
-        logo: https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/DAZN_logo.svg/250px-DAZN_logo.svg.png
+        logo: /logos/dazn.svg
         color: "#F8FF00"
         regions: ['DE', 'AT', 'CH', 'IT', 'ES', 'US', 'CA', 'JP']
       - name: Disney+
