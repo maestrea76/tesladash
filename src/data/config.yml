@@ -114,22 +114,12 @@ categories:
         scale: 1.5
         fullscreen: false
         regions: ['ES']
-      - name: Electroverse
-        url: https://electroverse.octopus.energy
-        logo: https://www.google.com/s2/favicons?domain=electroverse.octopus.energy&sz=128
       - name: EnBW mobility+
         url: https://www.enbw.com/elektromobilitaet
         logo: /logos/enbw.webp
         color: "#E2001A"
         fullscreen: false
         regions: ['DE', 'AT', 'CH']
-      - name: Enel X Way
-        url: https://www.enelxway.com
-        logo: /logos/enel-x-way.webp
-        color: "#00A651"
-        scale: 1.5
-        fullscreen: false
-        regions: ['IT', 'ES', 'PT', 'DE', 'FR', 'NL', 'BE', 'CH']
       - name: ESB eCars
         url: https://www.esb.ie/esb-ecars
         logo: /logos/esb-ecars.webp
@@ -201,11 +191,6 @@ categories:
         color: "#00B0F0"
         fullscreen: false
         regions: ['GB']
-      - name: PlugShare
-        url: https://www.plugshare.com
-        logo: /logos/plugshare.webp
-        color: "#6CC04A"
-        fullscreen: false
       - name: PlugSurfing
         url: https://plugsurfing.com
         logo: /logos/plugsurfing.webp
@@ -273,56 +258,22 @@ categories:
 
   - name: Streaming
     apps:
-      - name: Apple TV+
-        url: https://tv.apple.com
-        logo: /logos/appletv.svg
-      - name: ATRESplayer
-        url: https://www.atresplayer.com
-        logo: /logos/atresplayer.webp
-        color: "#FF6600"
-        regions: ['ES']
-      - name: Crunchyroll
-        url: https://www.crunchyroll.com
-        logo: /logos/crunchyroll.webp
-        color: "#F47521"
       - name: Disney+
         url: https://www.disneyplus.com
         logo: /logos/disneyplus.webp
-      - name: Filmin
-        url: https://www.filmin.es
-        logo: /logos/filmin.webp
-        color: "#F5A623"
-        regions: ['ES']
       - name: Max
         url: https://www.max.com
         logo: /logos/hbo.svg
-      - name: Mitele
-        url: https://www.mitele.es
-        logo: /logos/mitele.webp
-        color: "#E63324"
-        invert: true
-        regions: ['ES']
-      - name: Movistar+
-        url: https://ver.movistarplus.es
-        logo: /logos/movistarplus.webp
-        color: "#019DF4"
-        regions: ['ES']
       - name: Netflix
         url: https://www.netflix.com
         logo: /logos/netflix.svg
+      - name: OrangeTV
+        url: https://orangetv.orange.es/brw
+        logo: https://www.google.com/s2/favicons?domain=orangetv.orange.es&sz=128
+        color: "#FF6600"
       - name: Prime Video
         url: https://www.primevideo.com
         logo: /logos/prime-video.svg
-      - name: RTVE Play
-        url: https://www.rtve.es/play/
-        logo: /logos/rtveplay.webp
-        color: "#E30613"
-        regions: ['ES']
-      - name: SkyShowtime
-        url: https://www.skyshowtime.com
-        logo: /logos/skyshowtime.svg
-        color: "#E4002B"
-        regions: ['ES', 'PT', 'NO', 'SE', 'DK', 'FI', 'NL', 'PL']
       - name: YouTube
         url: https://www.youtube.com
         logo: /logos/youtube.svg
