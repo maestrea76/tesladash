@@ -40,31 +40,39 @@ categories:
     apps:
       - name: Excel
         url: https://www.office.com/launch/excel
-        logo: https://cdn.simpleicons.org/microsoftexcel/217346
+        logo: /logos/excel.svg
+        color: "#185C37"
       - name: Family Link
         url: https://families.google.com
         logo: https://www.google.com/s2/favicons?domain=families.google.com&sz=128
       - name: Gmail
         url: https://mail.google.com
-        logo: https://cdn.simpleicons.org/gmail/EA4335
+        logo: /logos/gmail.svg
+        color: "#EA4335"
       - name: Home Assistant
-        url: https://maestrea.synology.me:8123
-        logo: https://cdn.simpleicons.org/homeassistant/41BDF5
+        url: https://yourHA:8123
+        logo: /logos/homeassistant.svg
+        color: "#41BDF5"
       - name: Outlook
         url: https://outlook.live.com
-        logo: https://cdn.simpleicons.org/microsoftoutlook/0078D4
+        logo: /logos/outlook.svg
+        color: "#0078D4"
       - name: Teams
         url: https://teams.microsoft.com
-        logo: https://cdn.simpleicons.org/microsoftteams/6264A7
+        logo: /logos/teams.svg
+        color: "#5059C9"
       - name: Telegram
         url: https://web.telegram.org
-        logo: https://cdn.simpleicons.org/telegram/26A5E4
+        logo: /logos/telegram.svg
+        color: "#26A5E4"
       - name: WhatsApp
         url: https://web.whatsapp.com
-        logo: https://cdn.simpleicons.org/whatsapp/25D366
+        logo: /logos/whatsapp.svg
+        color: "#25D366"
       - name: Word
         url: https://www.office.com/launch/word
-        logo: https://cdn.simpleicons.org/microsoftword/2B579A
+        logo: /logos/word.svg
+        color: "#103F91"
 
   - name: EV
     apps:
