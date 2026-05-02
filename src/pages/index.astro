@@ -138,6 +138,11 @@ const categories = await Promise.all(
 				<h1 class="logo">
 					<img src="/logos/tesla.svg" alt="Tesla" class="logo-img" fetchpriority="high" />
 				</h1>
+				<div class="cat-switches" id="cat-switches">
+					{categories.map(cat => (
+						<button class="cat-switch" data-cat={cat.name}>{cat.name}</button>
+					))}
+				</div>
 				<div class="header-right">
 					<button class="header-btn lang-btn" id="lang-btn" title="Language & Region">
 						<span id="lang-current">🇬🇧 EN</span>
@@ -222,6 +227,7 @@ const categories = await Promise.all(
 								class="card"
 								style={`--app-color: ${app.color};`}
 								data-regions={app.regions?.length ? app.regions.join(",") : undefined}
+								data-app-json={JSON.stringify({name: app.name, url: app.url, logo: app.logo, color: app.color, category: cat.name})}
 							>
 								<span class="spotlight" aria-hidden="true"></span>
 								<span class="border-glow" aria-hidden="true"></span>
@@ -230,8 +236,8 @@ const categories = await Promise.all(
 										<img
 											src={app.logo}
 											alt={`${app.name} logo`}
-											width="80"
-											height="80"
+											width="48"
+											height="48"
 											style={[app.invert ? 'filter: invert(1)' : '', app.scale ? `transform: scale(${app.scale})` : ''].filter(Boolean).join(';') || undefined}
 											onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
 										/>
@@ -241,6 +247,9 @@ const categories = await Promise.all(
 									</div>
 									<p class="app-name">{app.name}</p>
 								</div>
+								<button class="card-menu" aria-label={`Edit ${app.name}`}>
+									<svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
+								</button>
 							</a>
 						))}
 					</div>
@@ -302,7 +311,7 @@ const categories = await Promise.all(
 					<p class="form-error" id="form-error" style="display:none"></p>
 					<div class="form-actions">
 						<button type="button" class="form-btn form-btn-cancel" data-close="modal-add-app">Cancel</button>
-						<button type="submit" class="form-btn form-btn-submit">Add App</button>
+						<button type="submit" id="add-app-submit-btn" class="form-btn form-btn-submit">Add App</button>
 					</div>
 				</form>
 			</div>
@@ -1398,8 +1407,37 @@ const categories = await Promise.all(
 			applyRegionFilter(detectedCountry);
 			applyCountryActive(detectedCountry);
 
+			// ── Category Toggles ──
+			const CAT_VIS_KEY = 'tesdash-cat-visibility';
+			function loadCatVis(): Record<string, boolean> {
+				try { return JSON.parse(localStorage.getItem(CAT_VIS_KEY) || '{}'); }
+				catch { return {}; }
+			}
+			function applyCatVisibility() {
+				const vis = loadCatVis();
+				document.querySelectorAll<HTMLElement>('.cat-switch').forEach(btn => {
+					const cat = btn.dataset.cat!;
+					const active = vis[cat] !== false;
+					btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+					btn.classList.toggle('active', active);
+					const section = container.querySelector<HTMLElement>(`[data-category="${CSS.escape(cat)}"]`);
+					if (section) section.style.display = active ? '' : 'none';
+				});
+			}
+			document.querySelectorAll<HTMLElement>('.cat-switch').forEach(btn => {
+				btn.addEventListener('click', () => {
+					const cat = btn.dataset.cat!;
+					const vis = loadCatVis();
+					vis[cat] = vis[cat] === false ? true : false;
+					localStorage.setItem(CAT_VIS_KEY, JSON.stringify(vis));
+					applyCatVisibility();
+				});
+			});
+			applyCatVisibility();
+
 			// ── Custom Apps ──
 			const CUSTOM_KEY = 'tesdash-custom-apps';
+			const HIDDEN_STATIC_KEY = 'tesdash-hidden-static';
 
 			interface CustomApp {
 				id: string;
@@ -1415,9 +1453,29 @@ const categories = await Promise.all(
 				try { return JSON.parse(localStorage.getItem(CUSTOM_KEY) || '[]'); }
 				catch { return []; }
 			}
-
 			function saveCustomApps(apps: CustomApp[]) {
 				localStorage.setItem(CUSTOM_KEY, JSON.stringify(apps));
+			}
+			function loadHiddenStatic(): string[] {
+				try { return JSON.parse(localStorage.getItem(HIDDEN_STATIC_KEY) || '[]'); }
+				catch { return []; }
+			}
+			function applyHiddenStatic() {
+				loadHiddenStatic().forEach(url => {
+					const card = container.querySelector<HTMLElement>(`.card:not([data-custom-id])[href="${CSS.escape(url)}"]`);
+					if (card) card.style.display = 'none';
+				});
+			}
+			applyHiddenStatic();
+
+			function insertCardAlphabetically(grid: Element, card: HTMLElement, name: string) {
+				const existing = Array.from(grid.querySelectorAll<HTMLElement>('.card'));
+				const before = existing.find(el => {
+					const n = el.querySelector('.app-name')?.textContent ?? '';
+					return n.localeCompare(name, undefined, {sensitivity: 'base'}) > 0;
+				});
+				if (before) grid.insertBefore(card, before);
+				else grid.appendChild(card);
 			}
 
 			function createCustomCard(app: CustomApp): HTMLAnchorElement {
@@ -1428,31 +1486,27 @@ const categories = await Promise.all(
 				a.className = 'card';
 				a.style.setProperty('--app-color', app.color);
 				a.dataset.customId = app.id;
+				a.dataset.appJson = JSON.stringify({name: app.name, url: app.url, logo: app.logo, color: app.color, category: app.category});
 
 				const spotlight = document.createElement('span');
 				spotlight.className = 'spotlight';
 				spotlight.setAttribute('aria-hidden', 'true');
-
 				const borderGlow = document.createElement('span');
 				borderGlow.className = 'border-glow';
 				borderGlow.setAttribute('aria-hidden', 'true');
-
 				const inner = document.createElement('div');
 				inner.className = 'card-inner';
-
 				const iconWrap = document.createElement('div');
 				iconWrap.className = 'icon-wrap';
-
 				const fallback = document.createElement('span');
 				fallback.className = 'icon-fallback';
 				fallback.style.color = app.color;
-
 				if (app.logo) {
 					const img = document.createElement('img');
 					img.src = app.logo;
 					img.alt = `${app.name} logo`;
-					img.width = 80;
-					img.height = 80;
+					img.width = 48;
+					img.height = 48;
 					img.onerror = () => { img.style.display = 'none'; fallback.style.display = 'flex'; };
 					iconWrap.appendChild(img);
 					fallback.style.display = 'none';
@@ -1461,27 +1515,30 @@ const categories = await Promise.all(
 				}
 				fallback.textContent = app.name[0]?.toUpperCase() ?? '?';
 				iconWrap.appendChild(fallback);
-
 				const appName = document.createElement('p');
 				appName.className = 'app-name';
 				appName.textContent = app.name;
-
 				inner.appendChild(iconWrap);
 				inner.appendChild(appName);
+
+				const menuBtn = document.createElement('button');
+				menuBtn.className = 'card-menu';
+				menuBtn.setAttribute('aria-label', `Edit ${app.name}`);
+				menuBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>`;
 
 				const deleteBtn = document.createElement('button');
 				deleteBtn.className = 'card-delete';
 				deleteBtn.setAttribute('aria-label', `Delete ${app.name}`);
 				deleteBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>`;
 				deleteBtn.addEventListener('click', (e) => {
-					e.preventDefault();
-					e.stopPropagation();
+					e.preventDefault(); e.stopPropagation();
 					deleteCustomApp(app.id);
 				});
 
 				a.appendChild(spotlight);
 				a.appendChild(borderGlow);
 				a.appendChild(inner);
+				a.appendChild(menuBtn);
 				a.appendChild(deleteBtn);
 				attachSpotlight(a);
 				return a;
@@ -1490,19 +1547,15 @@ const categories = await Promise.all(
 			function getOrCreateCategorySection(categoryName: string): HTMLElement {
 				let section = container.querySelector<HTMLElement>(`[data-category="${CSS.escape(categoryName)}"]`);
 				if (section) return section;
-
 				section = document.createElement('section');
 				section.className = 'category';
 				section.dataset.category = categoryName;
-
 				const title = document.createElement('h2');
 				title.className = 'category-title';
 				title.innerHTML = `<span class="drag-handle" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="5" r="1.5"/><circle cx="15" cy="5" r="1.5"/><circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="9" cy="19" r="1.5"/><circle cx="15" cy="19" r="1.5"/></svg></span>`;
 				title.appendChild(document.createTextNode(categoryName));
-
 				const grid = document.createElement('div');
 				grid.className = 'grid';
-
 				section.appendChild(title);
 				section.appendChild(grid);
 				container.appendChild(section);
@@ -1511,34 +1564,32 @@ const categories = await Promise.all(
 			}
 
 			function renderCustomApps() {
-				// Remove existing custom cards
 				document.querySelectorAll<HTMLElement>('[data-custom-id]').forEach(el => el.remove());
-				// Remove empty custom-only sections
 				document.querySelectorAll<HTMLElement>('.category[data-custom-section]').forEach(el => el.remove());
-
 				const apps = loadCustomApps();
 				apps.forEach(app => {
 					const section = getOrCreateCategorySection(app.category);
 					if (!section.dataset.customSection) {
-						// Mark if this section was created just for custom apps (no static apps)
 						const isNewSection = !section.querySelector('.card:not([data-custom-id])');
 						if (isNewSection) section.dataset.customSection = 'true';
 					}
-					section.querySelector('.grid')?.appendChild(createCustomCard(app));
+					const grid = section.querySelector('.grid')!;
+					insertCardAlphabetically(grid, createCustomCard(app), app.name);
 				});
 			}
 
 			function deleteCustomApp(id: string) {
-				const apps = loadCustomApps().filter(a => a.id !== id);
-				saveCustomApps(apps);
+				saveCustomApps(loadCustomApps().filter(a => a.id !== id));
 				renderCustomApps();
 			}
 
 			renderCustomApps();
 
-			// ── Add App Form ──
-			document.getElementById('btn-add-app')?.addEventListener('click', () => {
-				// Populate category select from current DOM
+			// ── Edit App ──
+			interface EditState { id: string; isCustom: boolean; originalUrl: string; }
+			let editState: EditState | null = null;
+
+			function populateCategorySelect(current?: string) {
 				const select = document.getElementById('app-category') as HTMLSelectElement;
 				select.innerHTML = '';
 				getSections().forEach(section => {
@@ -1546,21 +1597,54 @@ const categories = await Promise.all(
 					const opt = document.createElement('option');
 					opt.value = name;
 					opt.textContent = name;
+					if (name === current) opt.selected = true;
 					select.appendChild(opt);
 				});
 				const newOpt = document.createElement('option');
 				newOpt.value = '__new__';
 				newOpt.textContent = '+ New category…';
 				select.appendChild(newOpt);
+			}
 
-				// Reset form
+			function openEditModal(card: HTMLAnchorElement) {
+				const raw = card.dataset.appJson || card.getAttribute('data-app-json');
+				if (!raw) return;
+				const app = JSON.parse(raw) as {name:string;url:string;logo:string;color:string;category:string};
+				const isCustom = !!card.dataset.customId;
+				editState = { id: card.dataset.customId || app.url, isCustom, originalUrl: app.url };
+
+				populateCategorySelect(app.category);
+				(document.getElementById('new-cat-row') as HTMLElement).style.display = 'none';
+				(document.getElementById('form-error') as HTMLElement).style.display = 'none';
+				(document.getElementById('app-name') as HTMLInputElement).value = app.name;
+				(document.getElementById('app-url') as HTMLInputElement).value = app.url;
+				(document.getElementById('app-logo') as HTMLInputElement).value = app.logo || '';
+				(document.getElementById('app-color') as HTMLInputElement).value = app.color || '#e50914';
+				(document.getElementById('app-fullscreen-hint') as HTMLElement).textContent = 'Opens in a new tab';
+				(document.getElementById('add-app-title') as HTMLElement).textContent = 'Edit App';
+				(document.getElementById('add-app-submit-btn') as HTMLElement).textContent = 'Save';
+				openModal('modal-add-app');
+			}
+
+			container.addEventListener('click', (e) => {
+				const menuBtn = (e.target as Element).closest<HTMLElement>('.card-menu');
+				if (!menuBtn) return;
+				e.preventDefault(); e.stopPropagation();
+				openEditModal(menuBtn.closest<HTMLAnchorElement>('.card')!);
+			});
+
+			// ── Add App Form ──
+			document.getElementById('btn-add-app')?.addEventListener('click', () => {
+				editState = null;
+				populateCategorySelect();
 				(document.getElementById('add-app-form') as HTMLFormElement).reset();
 				(document.getElementById('app-color') as HTMLInputElement).value = '#e50914';
 				(document.getElementById('new-cat-row') as HTMLElement).style.display = 'none';
 				(document.getElementById('form-error') as HTMLElement).style.display = 'none';
-				const fsCheckbox = document.getElementById('app-fullscreen') as HTMLInputElement;
-				fsCheckbox.checked = true;
+				(document.getElementById('app-fullscreen') as HTMLInputElement).checked = true;
 				(document.getElementById('app-fullscreen-hint') as HTMLElement).textContent = 'Opens in a new tab';
+				(document.getElementById('add-app-title') as HTMLElement).textContent = 'Add App';
+				(document.getElementById('add-app-submit-btn') as HTMLElement).textContent = 'Add App';
 				openModal('modal-add-app');
 			});
 
@@ -1581,28 +1665,38 @@ const categories = await Promise.all(
 				const color = (document.getElementById('app-color') as HTMLInputElement).value;
 				const catSelect = (document.getElementById('app-category') as HTMLSelectElement).value;
 				const newCat = (document.getElementById('app-new-cat') as HTMLInputElement).value.trim();
-				const errorEl = document.getElementById('form-error') as HTMLElement;
 
 				const category = catSelect === '__new__' ? newCat : catSelect;
-
 				if (!name) { showFormError('Please enter a name.'); return; }
 				if (!rawUrl) { showFormError('Please enter a URL.'); return; }
 				if (!category) { showFormError('Please enter a category name.'); return; }
-
 				let url = rawUrl;
 				if (!url.startsWith('http://') && !url.startsWith('https://')) url = 'https://' + url;
 				try { new URL(url); } catch { showFormError('Invalid URL.'); return; }
-
-				errorEl.style.display = 'none';
-
+				(document.getElementById('form-error') as HTMLElement).style.display = 'none';
 				const appFullscreen = (document.getElementById('app-fullscreen') as HTMLInputElement).checked;
-				const app: CustomApp = {
-					id: crypto.randomUUID(),
-					name, url, logo, color, category, fullscreen: appFullscreen,
-				};
-				const apps = loadCustomApps();
-				apps.push(app);
-				saveCustomApps(apps);
+
+				if (editState) {
+					if (editState.isCustom) {
+						const apps = loadCustomApps();
+						const idx = apps.findIndex(a => a.id === editState!.id);
+						if (idx >= 0) { apps[idx] = { ...apps[idx], name, url, logo, color, category, fullscreen: appFullscreen }; }
+						saveCustomApps(apps);
+					} else {
+						// Hide static card and save as custom override
+						const hidden = loadHiddenStatic();
+						if (!hidden.includes(editState.originalUrl)) { hidden.push(editState.originalUrl); localStorage.setItem(HIDDEN_STATIC_KEY, JSON.stringify(hidden)); }
+						applyHiddenStatic();
+						const apps = loadCustomApps();
+						apps.push({ id: crypto.randomUUID(), name, url, logo, color, category, fullscreen: appFullscreen });
+						saveCustomApps(apps);
+					}
+					editState = null;
+				} else {
+					const apps = loadCustomApps();
+					apps.push({ id: crypto.randomUUID(), name, url, logo, color, category, fullscreen: appFullscreen });
+					saveCustomApps(apps);
+				}
 				renderCustomApps();
 				closeModal('modal-add-app');
 			});
@@ -1725,16 +1819,53 @@ const categories = await Promise.all(
 	/* ── Header ── */
 	header {
 		display: grid;
-		grid-template-columns: 1fr auto 1fr;
+		grid-template-columns: auto 1fr auto;
 		align-items: center;
+		gap: 1.5rem;
 		margin-bottom: 0.6rem;
 	}
 
 	.logo {
-		grid-column: 2;
-		justify-self: center;
+		grid-column: 1;
+		justify-self: start;
 		margin: 0;
 		line-height: 0;
+	}
+
+	.cat-switches {
+		grid-column: 2;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.cat-switch {
+		font-family: inherit;
+		font-size: 0.7rem;
+		font-weight: 600;
+		letter-spacing: 0.07em;
+		text-transform: uppercase;
+		padding: 0.35rem 0.85rem;
+		border-radius: 999px;
+		border: 1px solid var(--border);
+		background: var(--surface);
+		color: var(--muted);
+		cursor: pointer;
+		transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
+		white-space: nowrap;
+	}
+
+	.cat-switch.active {
+		background: var(--red);
+		border-color: var(--red);
+		color: #fff;
+	}
+
+	.cat-switch:not(.active):hover {
+		border-color: var(--muted);
+		color: var(--text);
 	}
 
 	.logo-img {
@@ -1754,6 +1885,7 @@ const categories = await Promise.all(
 	.header-right {
 		grid-column: 3;
 		justify-self: end;
+		flex-shrink: 0;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-end;
@@ -1832,25 +1964,26 @@ const categories = await Promise.all(
 		header {
 			grid-template-columns: 1fr 1fr;
 			grid-template-rows: auto auto;
-			row-gap: 1.25rem;
+			row-gap: 0.75rem;
 		}
 
 		.logo {
-			grid-column: 1 / -1;
-			grid-row: 1;
-		}
-
-		.header-actions {
 			grid-column: 1;
-			grid-row: 2;
+			grid-row: 1;
 			justify-self: start;
 		}
 
 		header .header-right {
 			grid-column: 2;
-			grid-row: 2;
+			grid-row: 1;
 			justify-self: end;
 			align-items: flex-end;
+		}
+
+		.cat-switches {
+			grid-column: 1 / -1;
+			grid-row: 2;
+			justify-content: flex-start;
 		}
 	}
 
@@ -2058,8 +2191,8 @@ const categories = await Promise.all(
 	}
 
 	.icon-wrap img {
-		width: 80px;
-		height: 80px;
+		width: 48px;
+		height: 48px;
 		object-fit: contain;
 		transition: transform 200ms ease;
 	}
@@ -2072,9 +2205,9 @@ const categories = await Promise.all(
 		display: none;
 		align-items: center;
 		justify-content: center;
-		width: 80px;
-		height: 80px;
-		font-size: 3rem;
+		width: 48px;
+		height: 48px;
+		font-size: 1.75rem;
 		font-weight: 700;
 	}
 
@@ -2088,15 +2221,15 @@ const categories = await Promise.all(
 	}
 
 	@media (min-width: 1400px) {
-		.icon-wrap img { width: 100px; height: 100px; }
-		.icon-fallback { width: 100px; height: 100px; font-size: 3.5rem; }
+		.icon-wrap img { width: 60px; height: 60px; }
+		.icon-fallback { width: 60px; height: 60px; font-size: 2.25rem; }
 		.app-name { font-size: 1.1rem; }
 		.card-inner { gap: 1.25rem; padding: 2rem; }
 	}
 
 	@media (max-width: 480px) {
-		.icon-wrap img { width: 60px; height: 60px; }
-		.icon-fallback { width: 60px; height: 60px; font-size: 2.25rem; }
+		.icon-wrap img { width: 36px; height: 36px; }
+		.icon-fallback { width: 36px; height: 36px; font-size: 1.25rem; }
 		.app-name { font-size: 0.875rem; }
 	}
 
@@ -2274,6 +2407,33 @@ const categories = await Promise.all(
 		background: rgba(229, 9, 20, 0.8);
 		color: #fff;
 		border-color: transparent;
+	}
+
+	.card-menu {
+		position: absolute;
+		top: 0.4rem;
+		right: 2rem;
+		z-index: 2;
+		width: 26px;
+		height: 26px;
+		border-radius: 50%;
+		background: transparent;
+		border: none;
+		color: var(--muted);
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		opacity: 0;
+		transition: opacity 150ms ease, background 150ms ease, color 150ms ease;
+	}
+
+	.card:hover .card-menu,
+	.card.touching .card-menu { opacity: 1; }
+
+	.card-menu:hover {
+		background: rgba(0, 0, 0, 0.35);
+		color: var(--text);
 	}
 
 	.card-delete svg { width: 12px; height: 12px; }

@@ -1,4 +1,276 @@
 categories:
+  - name: Información
+    apps:
+      - name: Diario Vasco
+        url: https://www.diariovasco.com
+        logo: https://www.google.com/s2/favicons?domain=diariovasco.com&sz=128
+      - name: El Mundo
+        url: https://www.elmundo.es
+        logo: https://www.google.com/s2/favicons?domain=elmundo.es&sz=128
+      - name: El País
+        url: https://elpais.com
+        logo: https://www.google.com/s2/favicons?domain=elpais.com&sz=128
+      - name: Google
+        url: https://www.google.com
+        logo: https://cdn.simpleicons.org/google
+      - name: Google Maps
+        url: https://maps.google.com
+        logo: /logos/googleMaps.svg
+        fullscreen: false
+      - name: Reddit
+        url: https://www.reddit.com
+        logo: https://cdn.simpleicons.org/reddit/FF4500
+      - name: Sofascore
+        url: https://www.sofascore.com/es
+        logo: https://www.google.com/s2/favicons?domain=sofascore.com&sz=128
+      - name: Ventusky
+        url: https://www.ventusky.com
+        logo: /logos/ventusky.webp
+        color: "#2196F3"
+        fullscreen: false
+      - name: Waze
+        url: https://www.waze.com
+        logo: /logos/waze.svg
+        fullscreen: false
+      - name: X
+        url: https://x.com
+        logo: https://cdn.simpleicons.org/x
+
+  - name: Productividad
+    apps:
+      - name: Excel
+        url: https://www.office.com/launch/excel
+        logo: https://cdn.simpleicons.org/microsoftexcel/217346
+      - name: Family Link
+        url: https://families.google.com
+        logo: https://www.google.com/s2/favicons?domain=families.google.com&sz=128
+      - name: Gmail
+        url: https://mail.google.com
+        logo: https://cdn.simpleicons.org/gmail/EA4335
+      - name: Home Assistant
+        url: https://maestrea.synology.me:8123
+        logo: https://cdn.simpleicons.org/homeassistant/41BDF5
+      - name: Outlook
+        url: https://outlook.live.com
+        logo: https://cdn.simpleicons.org/microsoftoutlook/0078D4
+      - name: Teams
+        url: https://teams.microsoft.com
+        logo: https://cdn.simpleicons.org/microsoftteams/6264A7
+      - name: Telegram
+        url: https://web.telegram.org
+        logo: https://cdn.simpleicons.org/telegram/26A5E4
+      - name: WhatsApp
+        url: https://web.whatsapp.com
+        logo: https://cdn.simpleicons.org/whatsapp/25D366
+      - name: Word
+        url: https://www.office.com/launch/word
+        logo: https://cdn.simpleicons.org/microsoftword/2B579A
+
+  - name: EV
+    apps:
+      - name: ABRP
+        url: https://abetterrouteplanner.com
+        logo: https://www.google.com/s2/favicons?domain=abetterrouteplanner.com&sz=128
+      - name: Be Charge
+        url: https://www.becharge.it
+        logo: /logos/be-charge.webp
+        color: "#0033A0"
+        fullscreen: false
+        regions: ['IT']
+      - name: Blink Charging
+        url: https://www.blinkcharging.com
+        logo: /logos/blink-charging.webp
+        color: "#0068FF"
+        fullscreen: false
+        regions: ['US']
+      - name: ChargePoint
+        url: https://www.chargepoint.com
+        logo: /logos/chargepoint.webp
+        color: "#0078D4"
+        fullscreen: false
+        regions: ['US', 'CA']
+      - name: Chargefox
+        url: https://www.chargefox.com
+        logo: /logos/chargefox.webp
+        color: "#F26522"
+        fullscreen: false
+        regions: ['AU']
+      - name: EDP Charge
+        url: https://edpcharge.pt
+        logo: /logos/edp-charge.webp
+        color: "#E31837"
+        fullscreen: false
+        regions: ['PT']
+      - name: Electrify America
+        url: https://www.electrifyamerica.com
+        logo: /logos/electrify-america.svg
+        color: "#5A2D82"
+        fullscreen: false
+        regions: ['US']
+      - name: Electromaps
+        url: https://www.electromaps.com
+        logo: /logos/electromaps.svg
+        color: "#00B4AA"
+        scale: 1.5
+        fullscreen: false
+        regions: ['ES']
+      - name: Electroverse
+        url: https://electroverse.octopus.energy
+        logo: https://www.google.com/s2/favicons?domain=electroverse.octopus.energy&sz=128
+      - name: EnBW mobility+
+        url: https://www.enbw.com/elektromobilitaet
+        logo: /logos/enbw.webp
+        color: "#E2001A"
+        fullscreen: false
+        regions: ['DE', 'AT', 'CH']
+      - name: Enel X Way
+        url: https://www.enelxway.com
+        logo: /logos/enel-x-way.webp
+        color: "#00A651"
+        scale: 1.5
+        fullscreen: false
+        regions: ['IT', 'ES', 'PT', 'DE', 'FR', 'NL', 'BE', 'CH']
+      - name: ESB eCars
+        url: https://www.esb.ie/esb-ecars
+        logo: /logos/esb-ecars.webp
+        color: "#003DA5"
+        fullscreen: false
+        regions: ['IE']
+      - name: Evie Networks
+        url: https://evienetworks.com.au
+        logo: /logos/evie-networks.webp
+        color: "#00B2A9"
+        fullscreen: false
+        regions: ['AU']
+      - name: EVgo
+        url: https://www.evgo.com
+        logo: /logos/evgo.webp
+        color: "#00A651"
+        fullscreen: false
+        regions: ['US']
+      - name: Fastned
+        url: https://fastnedcharging.com
+        logo: /logos/fastned.webp
+        color: "#FFD200"
+        fullscreen: false
+        regions: ['NL', 'BE', 'DE', 'FR', 'GB', 'CH']
+      - name: FLO
+        url: https://flo.com
+        logo: /logos/flo.webp
+        color: "#00A550"
+        fullscreen: false
+        regions: ['CA']
+      - name: Galp EV
+        url: https://www.galp.com/corp/en/drivers/electric-mobility
+        logo: /logos/galp-ev.webp
+        color: "#FF6600"
+        fullscreen: false
+        regions: ['PT']
+      - name: Iberdrola
+        url: https://www.google.com/maps/search/recarga+IBERDROLA
+        logo: /logos/iberdrola.svg
+        color: "#00A650"
+        fullscreen: false
+      - name: IONITY
+        url: https://ionity.eu
+        logo: /logos/Ionity.svg
+        color: "#FF4B00"
+        fullscreen: false
+        regions: ['DE', 'AT', 'CH', 'FR', 'BE', 'NL', 'ES', 'PT', 'NO', 'SE', 'DK', 'FI', 'PL', 'IT', 'GB', 'IE']
+      - name: Izivia
+        url: https://izivia.com
+        logo: /logos/izivia.webp
+        color: "#E2001A"
+        fullscreen: false
+        regions: ['FR']
+      - name: NotATeslaApp
+        url: https://www.notateslaapp.com
+        logo: https://www.google.com/s2/favicons?domain=notateslaapp.com&sz=128
+      - name: NRMA Charging
+        url: https://www.mynrma.com.au/electric-vehicles/charging
+        logo: /logos/nrma-charging.webp
+        color: "#E31837"
+        fullscreen: false
+        regions: ['AU']
+      - name: Octopus
+        url: https://octopus.energy
+        logo: https://www.google.com/s2/favicons?domain=octopus.energy&sz=128
+      - name: Osprey Charging
+        url: https://ospreycharging.co.uk
+        logo: /logos/osprey.webp
+        color: "#00B0F0"
+        fullscreen: false
+        regions: ['GB']
+      - name: PlugShare
+        url: https://www.plugshare.com
+        logo: /logos/plugshare.webp
+        color: "#6CC04A"
+        fullscreen: false
+      - name: PlugSurfing
+        url: https://plugsurfing.com
+        logo: /logos/plugsurfing.webp
+        color: "#6CBE45"
+        fullscreen: false
+        regions: ['DE', 'AT', 'CH', 'NL', 'BE', 'FR', 'SE', 'NO', 'DK', 'FI', 'PL']
+      - name: Pod Point
+        url: https://pod-point.com
+        logo: /logos/podpoint.webp
+        color: "#00A650"
+        fullscreen: false
+        regions: ['GB']
+      - name: Recharge (Circle K)
+        url: https://rechargeinfra.com
+        logo: /logos/recharge.webp
+        color: "#E2001A"
+        fullscreen: false
+        regions: ['NO', 'SE', 'DK', 'FI']
+      - name: State Grid EV
+        url: https://www.evcs.com.cn
+        logo: /logos/state-grid-ev.webp
+        color: "#006DB8"
+        fullscreen: false
+        regions: ['CN']
+      - name: TELD
+        url: https://www.teld.cn
+        logo: /logos/teld.webp
+        color: "#00A651"
+        fullscreen: false
+        regions: ['CN']
+      - name: Tesla
+        url: https://www.tesla.com
+        logo: /logos/tesla.svg
+        fullscreen: false
+      - name: Tessie
+        url: https://my.tessie.com
+        logo: https://www.google.com/s2/favicons?domain=tessie.com&sz=128
+      - name: TotalEnergies Charge
+        url: https://charge.totalenergies.fr
+        logo: /logos/totalenergies.webp
+        color: "#FF1430"
+        fullscreen: false
+        regions: ['FR', 'BE', 'LU']
+      - name: Zunder
+        url: https://www.google.com/maps/search/recarga+ZUNDER
+        logo: /logos/zunder.svg
+        color: "#FF6B00"
+        scale: 1.5
+        fullscreen: false
+
+  - name: IA
+    apps:
+      - name: ChatGPT
+        url: https://chatgpt.com
+        logo: https://cdn.simpleicons.org/openai
+      - name: Claude
+        url: https://claude.ai
+        logo: https://www.google.com/s2/favicons?domain=claude.ai&sz=128
+      - name: Gemini
+        url: https://gemini.google.com
+        logo: https://www.google.com/s2/favicons?domain=gemini.google.com&sz=128
+      - name: Grok
+        url: https://grok.com
+        logo: https://www.google.com/s2/favicons?domain=grok.com&sz=128
+
   - name: Streaming
     apps:
       - name: Apple TV+
@@ -9,13 +281,13 @@ categories:
         logo: /logos/atresplayer.webp
         color: "#FF6600"
         regions: ['ES']
-      - name: Disney+
-        url: https://www.disneyplus.com
-        logo: /logos/disneyplus.webp
       - name: Crunchyroll
         url: https://www.crunchyroll.com
         logo: /logos/crunchyroll.webp
         color: "#F47521"
+      - name: Disney+
+        url: https://www.disneyplus.com
+        logo: /logos/disneyplus.webp
       - name: Filmin
         url: https://www.filmin.es
         logo: /logos/filmin.webp
@@ -56,8 +328,11 @@ categories:
         logo: /logos/youtube.svg
         color: "#FF0000"
 
-  - name: Sports
+  - name: Otros
     apps:
+      - name: Amazon
+        url: https://www.amazon.es
+        logo: https://cdn.simpleicons.org/amazon/FF9900
       - name: DAZN
         url: https://www.dazn.com
         logo: /logos/dazn.svg
@@ -69,250 +344,14 @@ categories:
         color: "#003DA5"
         scale: 1.5
         regions: ['DE', 'AT', 'CH', 'FR', 'BE', 'NL', 'ES', 'PT', 'IT', 'NO', 'SE', 'DK', 'FI', 'PL', 'GB', 'IE']
-
       - name: F1 TV
         url: https://f1tv.formula1.com
         logo: /logos/f1tv.webp
         color: "#E10600"
         regions: ['US', 'CA', 'AU', 'FR', 'BE', 'ES', 'PT', 'NO', 'SE', 'DK', 'FI', 'PL']
-
-  # Personal Media is intentionally hidden from the public dashboard.
-  # Access your personal apps via the owner page (/me).
-  # - name: Personal Media
-  #   apps:
-  #     - name: Emby
-  #       url: https://192.168.1.20:8920
-  #       logo: https://cdn.simpleicons.org/emby/52B54B
-  #     - name: Jellyfin
-  #       url: https://192.168.1.20:8096
-  #       logo: https://cdn.simpleicons.org/jellyfin/00A4DC
-  #     - name: Plex
-  #       url: https://app.plex.tv
-  #       logo: https://cdn.simpleicons.org/plex/E5A00D
-  #     - name: Stremio
-  #       url: https://web.stremio.com
-  #       logo: https://cdn.simpleicons.org/stremio/8A5FBF
-
-  - name: Charging
-    apps:
-      # United States
-      - name: Blink Charging
-        url: https://www.blinkcharging.com
-        logo: /logos/blink-charging.webp
-        color: "#0068FF"
-        fullscreen: false
-        regions: ['US']
-      - name: ChargePoint
-        url: https://www.chargepoint.com
-        logo: /logos/chargepoint.webp
-        color: "#0078D4"
-        fullscreen: false
-        regions: ['US', 'CA']
-      - name: Electrify America
-        url: https://www.electrifyamerica.com
-        logo: /logos/electrify-america.svg
-        color: "#5A2D82"
-        fullscreen: false
-        regions: ['US']
-      - name: EVgo
-        url: https://www.evgo.com
-        logo: /logos/evgo.webp
-        color: "#00A651"
-        fullscreen: false
-        regions: ['US']
-      # Canada
-      - name: FLO
-        url: https://flo.com
-        logo: /logos/flo.webp
-        color: "#00A550"
-        fullscreen: false
-        regions: ['CA']
-      # Australia
-      - name: Chargefox
-        url: https://www.chargefox.com
-        logo: /logos/chargefox.webp
-        color: "#F26522"
-        fullscreen: false
-        regions: ['AU']
-      - name: Evie Networks
-        url: https://evienetworks.com.au
-        logo: /logos/evie-networks.webp
-        color: "#00B2A9"
-        fullscreen: false
-        regions: ['AU']
-      - name: NRMA Charging
-        url: https://www.mynrma.com.au/electric-vehicles/charging
-        logo: /logos/nrma-charging.webp
-        color: "#E31837"
-        fullscreen: false
-        regions: ['AU']
-      # China
-      - name: State Grid EV
-        url: https://www.evcs.com.cn
-        logo: /logos/state-grid-ev.webp
-        color: "#006DB8"
-        fullscreen: false
-        regions: ['CN']
-      - name: TELD
-        url: https://www.teld.cn
-        logo: /logos/teld.webp
-        color: "#00A651"
-        fullscreen: false
-        regions: ['CN']
-      # Spain
-      - name: Endesa X Way
-        url: https://www.endesaxway.com
-        logo: /logos/endesa-x.webp
-        color: "#00B4AA"
-        scale: 1.5
-        fullscreen: false
-        regions: ['ES']
-      - name: Iberdrola SmartCharge
-        url: https://smartcharge.iberdrola.es
-        logo: /logos/iberdrola.svg
-        color: "#00A650"
-        fullscreen: false
-        regions: ['ES']
-      - name: Zunder
-        url: https://zunder.com
-        logo: /logos/zunder.svg
-        color: "#FF6B00"
-        scale: 1.5
-        fullscreen: false
-        regions: ['ES']
-      # France
-      - name: Izivia
-        url: https://izivia.com
-        logo: /logos/izivia.webp
-        color: "#E2001A"
-        fullscreen: false
-        regions: ['FR']
-      - name: TotalEnergies Charge
-        url: https://charge.totalenergies.fr
-        logo: /logos/totalenergies.webp
-        color: "#FF1430"
-        fullscreen: false
-        regions: ['FR', 'BE', 'LU']
-      # Germany + Austria + Switzerland
-      - name: EnBW mobility+
-        url: https://www.enbw.com/elektromobilitaet
-        logo: /logos/enbw.webp
-        color: "#E2001A"
-        fullscreen: false
-        regions: ['DE', 'AT', 'CH']
-      # Italy
-      - name: Be Charge
-        url: https://www.becharge.it
-        logo: /logos/be-charge.webp
-        color: "#0033A0"
-        fullscreen: false
-        regions: ['IT']
-      - name: Enel X Way
-        url: https://www.enelxway.com
-        logo: /logos/enel-x-way.webp
-        color: "#00A651"
-        scale: 1.5
-        fullscreen: false
-        regions: ['IT', 'ES', 'PT', 'DE', 'FR', 'NL', 'BE', 'CH']
-      # Ireland
-      - name: ESB eCars
-        url: https://www.esb.ie/esb-ecars
-        logo: /logos/esb-ecars.webp
-        color: "#003DA5"
-        fullscreen: false
-        regions: ['IE']
-      # Portugal
-      - name: EDP Charge
-        url: https://edpcharge.pt
-        logo: /logos/edp-charge.webp
-        color: "#E31837"
-        fullscreen: false
-        regions: ['PT']
-      - name: Galp EV
-        url: https://www.galp.com/corp/en/drivers/electric-mobility
-        logo: /logos/galp-ev.webp
-        color: "#FF6600"
-        fullscreen: false
-        regions: ['PT']
-      # Netherlands + Belgium
-      - name: Fastned
-        url: https://fastnedcharging.com
-        logo: /logos/fastned.webp
-        color: "#FFD200"
-        fullscreen: false
-        regions: ['NL', 'BE', 'DE', 'FR', 'GB', 'CH']
-      # UK
-      - name: Osprey Charging
-        url: https://ospreycharging.co.uk
-        logo: /logos/osprey.webp
-        color: "#00B0F0"
-        fullscreen: false
-        regions: ['GB']
-      - name: Pod Point
-        url: https://pod-point.com
-        logo: /logos/podpoint.webp
-        color: "#00A650"
-        fullscreen: false
-        regions: ['GB']
-      # Nordics
-      - name: Recharge (Circle K)
-        url: https://rechargeinfra.com
-        logo: /logos/recharge.webp
-        color: "#E2001A"
-        fullscreen: false
-        regions: ['NO', 'SE', 'DK', 'FI']
-
-      - name: Electromaps
-        url: https://www.electromaps.com
-        logo: /logos/electromaps.svg
-        color: "#00B4AA"
-        scale: 1.5
-        fullscreen: false
-        regions: ['ES']
-      - name: IONITY
-        url: https://ionity.eu
-        logo: /logos/Ionity.svg
-        color: "#FF4B00"
-        fullscreen: false
-        regions: ['DE', 'AT', 'CH', 'FR', 'BE', 'NL', 'ES', 'PT', 'NO', 'SE', 'DK', 'FI', 'PL', 'IT', 'GB', 'IE']
-      - name: PlugSurfing
-        url: https://plugsurfing.com
-        logo: /logos/plugsurfing.webp
-        color: "#6CBE45"
-        fullscreen: false
-        regions: ['DE', 'AT', 'CH', 'NL', 'BE', 'FR', 'SE', 'NO', 'DK', 'FI', 'PL']
-
-  - name: Gaming
-    apps:
       - name: GeForce Now
         url: https://play.geforcenow.com
         logo: /logos/nvidia.svg
-
       - name: Xbox Cloud
         url: https://www.xbox.com/play
         logo: /logos/xbox-cloud.webp
-  - name: Utility
-    apps:
-      - name: Google Maps
-        url: https://maps.google.com
-        logo: /logos/googleMaps.svg
-        fullscreen: false
-      - name: PlugShare
-        url: https://www.plugshare.com
-        logo: /logos/plugshare.webp
-        color: "#6CC04A"
-        fullscreen: false
-      - name: Tesla
-        url: https://www.tesla.com
-        logo: /logos/tesla.svg
-        fullscreen: false
-
-      - name: Ventusky
-        url: https://www.ventusky.com
-        logo: /logos/ventusky.webp
-        color: "#2196F3"
-        fullscreen: false
-      - name: Waze
-        url: https://www.waze.com
-        logo: /logos/waze.svg
-        fullscreen: false

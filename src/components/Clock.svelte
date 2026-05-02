@@ -40,17 +40,18 @@
 	}
 
 	.time {
-		font-size: 2rem;
+		font-size: 2.8rem;
 		font-weight: 700;
-		color: #f8fafc;
+		color: var(--text);
 		font-variant-numeric: tabular-nums;
 		letter-spacing: 0.05em;
 		line-height: 1;
 	}
 
 	.date {
-		font-size: 0.75rem;
-		color: #94a3b8;
+		font-size: 1.05rem;
+		color: var(--text);
+		opacity: 0.75;
 		text-transform: capitalize;
 		margin-top: 0.25rem;
 		letter-spacing: 0.05em;
