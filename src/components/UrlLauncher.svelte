@@ -1,5 +1,4 @@
 <script lang="ts">
-	const YOUTUBE_REDIRECT = 'https://www.youtube.com/redirect?q=';
 
 	const TRANSLATIONS: Record<string, { placeholder: string; btn: string; error: string }> = {
 		en: {
@@ -102,7 +101,7 @@
 		try {
 			new URL(target); // valida que sea una URL real
 			error = false;
-			window.open(`${YOUTUBE_REDIRECT}${encodeURIComponent(target)}`, '_blank');
+			window.open(target, '_blank');
 			url = '';
 		} catch {
 			error = true;
@@ -167,8 +166,8 @@
 		display: flex;
 		align-items: stretch;
 		height: 3.25rem;
-		background: rgba(255, 255, 255, 0.05);
-		border: 1px solid rgba(255, 255, 255, 0.1);
+		background: var(--surface, rgba(255, 255, 255, 0.05));
+		border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
 		border-radius: 14px;
 		backdrop-filter: blur(16px);
 		-webkit-backdrop-filter: blur(16px);
@@ -176,13 +175,13 @@
 	}
 
 	.input-wrap:focus-within {
-		border-color: rgba(255, 255, 255, 0.25);
-		box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
+		border-color: var(--muted, rgba(255, 255, 255, 0.25));
+		box-shadow: 0 0 0 3px rgba(204, 0, 0, 0.1);
 	}
 
 	.has-error .input-wrap {
-		border-color: rgba(229, 9, 20, 0.6);
-		box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.15);
+		border-color: rgba(204, 0, 0, 0.6);
+		box-shadow: 0 0 0 3px rgba(204, 0, 0, 0.15);
 	}
 
 	.icon {
@@ -190,7 +189,7 @@
 		align-self: center;
 		width: 20px;
 		height: 20px;
-		color: #64748b;
+		color: var(--muted, #64748b);
 		margin-left: 1rem;
 		flex-shrink: 0;
 	}
@@ -201,7 +200,7 @@
 		background: transparent;
 		border: none;
 		outline: none;
-		color: #f8fafc;
+		color: var(--text, #ffffff);
 		font-size: 1rem;
 		line-height: 1;
 		padding: 0 0.75rem;
@@ -211,14 +210,15 @@
 	}
 
 	input::placeholder {
-		color: #475569;
+		color: var(--muted, #6b7280);
+		opacity: 0.6;
 	}
 
 	.clear {
 		background: transparent;
 		border: none;
 		cursor: pointer;
-		color: #475569;
+		color: var(--muted, #6b7280);
 		padding: 0.5rem;
 		margin-right: 0.5rem;
 		align-self: center;
@@ -230,7 +230,7 @@
 		flex-shrink: 0;
 	}
 
-	.clear:hover { color: #94a3b8; }
+	.clear:hover { color: var(--text, #ffffff); }
 
 	.clear svg {
 		width: 16px;
@@ -241,7 +241,7 @@
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
-		background: #E50914;
+		background: var(--red, #CC0000);
 		color: #fff;
 		border: none;
 		border-radius: 14px;
@@ -255,7 +255,7 @@
 		flex-shrink: 0;
 	}
 
-	.launch-btn:hover { background: #f0141e; transform: scale(1.02); }
+	.launch-btn:hover { filter: brightness(1.15); transform: scale(1.02); }
 	.launch-btn:active { transform: scale(0.97); }
 
 	.launch-btn svg {
@@ -264,7 +264,7 @@
 	}
 
 	.error-msg {
-		color: #f87171;
+		color: #ef4444;
 		font-size: 0.8rem;
 		margin-top: 0.375rem;
 		padding-left: 1rem;
