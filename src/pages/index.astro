@@ -1633,11 +1633,48 @@ const categories = await Promise.all(
 				openModal('modal-add-app');
 			}
 
-			container.addEventListener('click', (e) => {
+			// ── Long-press to edit ──
+			const LONG_PRESS_MS = 600;
+			let lpTimer: ReturnType<typeof setTimeout> | null = null;
+			let lpBtn: HTMLElement | null = null;
+			let lpStartX = 0, lpStartY = 0;
+
+			function cancelLp() {
+				if (lpTimer) { clearTimeout(lpTimer); lpTimer = null; }
+				if (lpBtn) { lpBtn.classList.remove('holding'); lpBtn = null; }
+			}
+
+			container.addEventListener('pointerdown', (e) => {
 				const menuBtn = (e.target as Element).closest<HTMLElement>('.card-menu');
 				if (!menuBtn) return;
 				e.preventDefault(); e.stopPropagation();
-				openEditModal(menuBtn.closest<HTMLAnchorElement>('.card')!);
+				lpBtn = menuBtn;
+				lpStartX = e.clientX; lpStartY = e.clientY;
+				menuBtn.setPointerCapture(e.pointerId);
+				menuBtn.classList.add('holding');
+				lpTimer = setTimeout(() => {
+					lpTimer = null;
+					const card = menuBtn.closest<HTMLAnchorElement>('.card');
+					if (card) openEditModal(card);
+					menuBtn.classList.remove('holding');
+					lpBtn = null;
+				}, LONG_PRESS_MS);
+			});
+
+			container.addEventListener('pointermove', (e) => {
+				if (!lpTimer || !lpBtn) return;
+				const dx = e.clientX - lpStartX, dy = e.clientY - lpStartY;
+				if (Math.hypot(dx, dy) > 10) cancelLp();
+			});
+
+			container.addEventListener('pointerup', cancelLp);
+			container.addEventListener('pointercancel', cancelLp);
+
+			// Block accidental card navigation when releasing on menu btn
+			container.addEventListener('click', (e) => {
+				if ((e.target as Element).closest('.card-menu')) {
+					e.preventDefault(); e.stopPropagation();
+				}
 			});
 
 			// ── Add App Form ──
@@ -2417,8 +2454,8 @@ const categories = await Promise.all(
 
 	.card-menu {
 		position: absolute;
-		top: 0.4rem;
-		right: 2rem;
+		top: 0.3rem;
+		right: 0.3rem;
 		z-index: 2;
 		width: 26px;
 		height: 26px;
@@ -2431,15 +2468,21 @@ const categories = await Promise.all(
 		align-items: center;
 		justify-content: center;
 		opacity: 0;
-		transition: opacity 150ms ease, background 150ms ease, color 150ms ease;
+		transition: opacity 150ms ease, background 150ms ease, color 150ms ease, transform 150ms ease;
+		-webkit-user-select: none;
+		user-select: none;
+		touch-action: none;
 	}
 
 	.card:hover .card-menu,
 	.card.touching .card-menu { opacity: 1; }
 
-	.card-menu:hover {
-		background: rgba(0, 0, 0, 0.35);
-		color: var(--text);
+	.card-menu:hover { background: rgba(0,0,0,0.25); color: var(--text); }
+
+	.card-menu.holding {
+		background: rgba(204,0,0,0.25);
+		color: var(--red);
+		transform: scale(1.2);
 	}
 
 	.card-delete svg { width: 12px; height: 12px; }
