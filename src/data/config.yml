@@ -250,6 +250,7 @@ categories:
         url: https://www.google.com/maps/search/recarga+ZUNDER
         logo: /logos/zunder.jpg
         color: "#FF6B00"
+        scale: 1.3
         fullscreen: false
 
   - name: IA
