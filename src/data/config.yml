@@ -248,9 +248,8 @@ categories:
         regions: ['FR', 'BE', 'LU']
       - name: Zunder
         url: https://www.google.com/maps/search/recarga+ZUNDER
-        logo: /logos/zunder.svg
+        logo: /logos/zunder.jpg
         color: "#FF6B00"
-        scale: 1.5
         fullscreen: false
 
   - name: IA
