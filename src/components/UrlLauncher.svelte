@@ -1,81 +1,40 @@
 <script lang="ts">
 
-	const TRANSLATIONS: Record<string, { placeholder: string; btn: string; error: string }> = {
-		en: {
-			placeholder: 'Enter a URL to open fullscreen...',
-			btn: 'Open',
-			error: 'Invalid URL. Example: 192.168.1.10:8006 or https://example.com',
-		},
-		no: {
-			placeholder: 'Skriv inn en URL for å åpne i fullskjerm...',
-			btn: 'Åpne',
-			error: 'Ugyldig URL. Eksempel: 192.168.1.10:8006 eller https://example.com',
-		},
-		de: {
-			placeholder: 'URL für Vollbildmodus eingeben...',
-			btn: 'Öffnen',
-			error: 'Ungültige URL. Beispiel: 192.168.1.10:8006 oder https://example.com',
-		},
-		sv: {
-			placeholder: 'Ange en URL för att öppna i helskärm...',
-			btn: 'Öppna',
-			error: 'Ogiltig URL. Exempel: 192.168.1.10:8006 eller https://example.com',
-		},
-		nl: {
-			placeholder: 'Voer een URL in om op volledig scherm te openen...',
-			btn: 'Openen',
-			error: 'Ongeldige URL. Voorbeeld: 192.168.1.10:8006 of https://example.com',
-		},
-		fr: {
-			placeholder: 'Entrez une URL pour ouvrir en plein écran...',
-			btn: 'Ouvrir',
-			error: 'URL invalide. Exemple : 192.168.1.10:8006 ou https://example.com',
-		},
-		da: {
-			placeholder: 'Indtast en URL for at åbne i fuld skærm...',
-			btn: 'Åbn',
-			error: 'Ugyldig URL. Eksempel: 192.168.1.10:8006 eller https://example.com',
-		},
-		fi: {
-			placeholder: 'Syötä URL avattavaksi koko näytölle...',
-			btn: 'Avaa',
-			error: 'Virheellinen URL. Esimerkki: 192.168.1.10:8006 tai https://example.com',
-		},
-		it: {
-			placeholder: 'Inserisci un URL da aprire a schermo intero...',
-			btn: 'Apri',
-			error: 'URL non valido. Esempio: 192.168.1.10:8006 o https://example.com',
-		},
-		es: {
-			placeholder: 'Introduce una URL para abrir en pantalla completa...',
-			btn: 'Abrir',
-			error: 'URL inválida. Ejemplo: 192.168.1.10:8006 o https://example.com',
-		},
-		pt: {
-			placeholder: 'Digite uma URL para abrir em tela cheia...',
-			btn: 'Abrir',
-			error: 'URL inválida. Exemplo: 192.168.1.10:8006 ou https://example.com',
-		},
-		pl: {
-			placeholder: 'Wprowadź URL, aby otworzyć na pełnym ekranie...',
-			btn: 'Otwórz',
-			error: 'Nieprawidłowy URL. Przykład: 192.168.1.10:8006 lub https://example.com',
-		},
-		zh: {
-			placeholder: '输入网址以全屏打开...',
-			btn: '打开',
-			error: '无效的网址。示例：192.168.1.10:8006 或 https://example.com',
-		},
+	const TRANSLATIONS: Record<string, { placeholder: string; btn: string }> = {
+		en: { placeholder: 'URL or search...', btn: 'Open' },
+		no: { placeholder: 'URL eller søk...', btn: 'Åpne' },
+		de: { placeholder: 'URL oder Suche...', btn: 'Öffnen' },
+		sv: { placeholder: 'URL eller sök...', btn: 'Öppna' },
+		nl: { placeholder: 'URL of zoeken...', btn: 'Openen' },
+		fr: { placeholder: 'URL ou recherche...', btn: 'Ouvrir' },
+		da: { placeholder: 'URL eller søg...', btn: 'Åbn' },
+		fi: { placeholder: 'URL tai haku...', btn: 'Avaa' },
+		it: { placeholder: 'URL o ricerca...', btn: 'Apri' },
+		es: { placeholder: 'URL o búsqueda...', btn: 'Abrir' },
+		pt: { placeholder: 'URL ou pesquisa...', btn: 'Abrir' },
+		pl: { placeholder: 'URL lub wyszukaj...', btn: 'Otwórz' },
+		zh: { placeholder: '网址或搜索...', btn: '打开' },
 	};
 
 	let lang = $state('en');
 
 	let placeholder = $derived((TRANSLATIONS[lang] ?? TRANSLATIONS['en']).placeholder);
 	let btnLabel = $derived((TRANSLATIONS[lang] ?? TRANSLATIONS['en']).btn);
-	let errorText = $derived((TRANSLATIONS[lang] ?? TRANSLATIONS['en']).error);
 
 	let url = $state('');
 	let error = $state(false);
+
+	function looksLikeUrl(text: string): boolean {
+		// Explicit protocol → always URL
+		if (/^https?:\/\//i.test(text)) return true;
+		// IP address with optional port
+		if (/^\d{1,3}(\.\d{1,3}){3}(:\d+)?(\/.*)?$/.test(text)) return true;
+		// localhost with optional port
+		if (/^localhost(:\d+)?(\/.*)?$/i.test(text)) return true;
+		// No spaces + looks like domain (word.tld or word.word.tld)
+		if (!/\s/.test(text) && /^[a-zA-Z0-9]([a-zA-Z0-9\-]*\.)+[a-zA-Z]{2,}(:\d+)?(\/.*)?$/.test(text)) return true;
+		return false;
+	}
 
 	$effect(() => {
 		// Init from localStorage (client-only)
@@ -91,20 +50,27 @@
 	});
 
 	function launch() {
-		let target = url.trim();
-		if (!target) return;
+		const input = url.trim();
+		if (!input) return;
 
-		if (!target.startsWith('http://') && !target.startsWith('https://')) {
-			target = 'https://' + target;
-		}
+		error = false;
 
-		try {
-			new URL(target); // valida que sea una URL real
-			error = false;
-			window.open(target, '_blank');
+		if (looksLikeUrl(input)) {
+			// Treat as URL — prepend https:// if no protocol
+			let target = /^https?:\/\//i.test(input) ? input : 'https://' + input;
+			try {
+				new URL(target);
+				window.open(target, '_blank');
+				url = '';
+			} catch {
+				// Fallback to Google search if URL parsing fails
+				window.open('https://www.google.com/search?q=' + encodeURIComponent(input), '_blank');
+				url = '';
+			}
+		} else {
+			// Plain words → Google search
+			window.open('https://www.google.com/search?q=' + encodeURIComponent(input), '_blank');
 			url = '';
-		} catch {
-			error = true;
 		}
 	}
 
@@ -148,10 +114,6 @@
 		</svg>
 	</button>
 </div>
-{#if error}
-	<p class="error-msg">{errorText}</p>
-{/if}
-
 <style>
 	.launcher {
 		display: flex;
@@ -263,10 +225,4 @@
 		height: 16px;
 	}
 
-	.error-msg {
-		color: #ef4444;
-		font-size: 0.8rem;
-		margin-top: 0.375rem;
-		padding-left: 1rem;
-	}
 </style>

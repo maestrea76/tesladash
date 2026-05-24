@@ -10,6 +10,10 @@ categories:
       - name: El País
         url: https://elpais.com
         logo: https://www.google.com/s2/favicons?domain=elpais.com&sz=128
+      - name: Farmacia de Guardia
+        url: https://www.cofgipuzkoa.eus/ciudadano/farmacias-gipuzkoa/farmacias-de-guardia-2/
+        logo: /logos/farmacia.svg
+        color: "#1a8a3c"
       - name: Google
         url: https://www.google.com
         logo: /logos/google-g.png
