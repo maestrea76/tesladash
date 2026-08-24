@@ -1,4 +1,20 @@
 categories:
+  - name: IA
+    apps:
+      - name: ChatGPT
+        url: https://chatgpt.com
+        logo: https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/ChatGPT-Logo.svg/500px-ChatGPT-Logo.svg.png
+        color: "#10A37F"
+      - name: Claude
+        url: https://claude.ai
+        logo: https://www.google.com/s2/favicons?domain=claude.ai&sz=128
+      - name: Gemini
+        url: https://gemini.google.com
+        logo: https://www.google.com/s2/favicons?domain=gemini.google.com&sz=128
+      - name: Grok
+        url: https://grok.com
+        logo: https://www.google.com/s2/favicons?domain=grok.com&sz=128
+
   - name: Información
     apps:
       - name: Diario Vasco
@@ -252,22 +268,6 @@ categories:
         color: "#FF6B00"
         scale: 1.7
         fullscreen: false
-
-  - name: IA
-    apps:
-      - name: ChatGPT
-        url: https://chatgpt.com
-        logo: https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/ChatGPT-Logo.svg/500px-ChatGPT-Logo.svg.png
-        color: "#10A37F"
-      - name: Claude
-        url: https://claude.ai
-        logo: https://www.google.com/s2/favicons?domain=claude.ai&sz=128
-      - name: Gemini
-        url: https://gemini.google.com
-        logo: https://www.google.com/s2/favicons?domain=gemini.google.com&sz=128
-      - name: Grok
-        url: https://grok.com
-        logo: https://www.google.com/s2/favicons?domain=grok.com&sz=128
 
   - name: Streaming
     apps:
