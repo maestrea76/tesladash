@@ -28,6 +28,50 @@
 	});
 
 	$effect(() => {
+		// Charger cards (Google Maps searches) → open centered on the user's live GPS location.
+		// Falls back to the plain search if GPS is unavailable or the user denies permission.
+		const MAPS_SEARCH_RE = /\/maps\/search\//;
+		const HAS_COORDS_RE = /\/@-?\d+(?:\.\d+)?,-?\d+(?:\.\d+)?/;
+
+		const onClick = (e: MouseEvent) => {
+			if (e.defaultPrevented || e.button !== 0) return;
+			if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+			const el = e.target as HTMLElement;
+			if (el.closest('.card-menu')) return; // edit button, handled elsewhere
+			const card = el.closest('a.card') as HTMLAnchorElement | null;
+			if (!card) return;
+			const href = card.href;
+			if (!MAPS_SEARCH_RE.test(href) || HAS_COORDS_RE.test(href)) return;
+			if (!('geolocation' in navigator)) return; // let the plain search open
+
+			e.preventDefault();
+			// Open the tab synchronously to keep the user gesture (avoids popup blocking),
+			// then redirect it once we have the coordinates.
+			const win = window.open('', '_blank');
+			if (win) {
+				try {
+					win.document.write('<!doctype html><meta name="viewport" content="width=device-width,initial-scale=1"><title>Localizando…</title><body style="margin:0;height:100vh;display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif;background:#111;color:#eee"><p>📍 Localizando…</p></body>');
+				} catch {}
+			}
+			const base = href.replace(/\/+$/, '');
+			navigator.geolocation.getCurrentPosition(
+				(pos) => {
+					const { latitude, longitude } = pos.coords;
+					const url = `${base}/@${latitude.toFixed(6)},${longitude.toFixed(6)},13z`;
+					if (win) win.location.href = url; else window.open(url, '_blank');
+				},
+				() => {
+					if (win) win.location.href = href; else window.open(href, '_blank');
+				},
+				{ enableHighAccuracy: true, timeout: 8000, maximumAge: 60000 }
+			);
+		};
+
+		document.addEventListener('click', onClick, true);
+		return () => document.removeEventListener('click', onClick, true);
+	});
+
+	$effect(() => {
 		// Init from localStorage (client-only)
 		const saved = localStorage.getItem('tesdash-lang');
 		locale = saved || navigator.language.split('-')[0] || 'en';
