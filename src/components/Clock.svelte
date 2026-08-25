@@ -2,7 +2,7 @@
 	let locale = $state('en');
 	let time = $state('--:--');
 	let date = $state('');
-	let zoom = $state(100);
+	let zoom = $state(80);
 
 	const ZOOM_KEY = 'tesdash-zoom';
 	const ZOOM_MIN = 50, ZOOM_MAX = 200, ZOOM_STEP = 10;
@@ -19,9 +19,9 @@
 
 	$effect(() => {
 		// Init zoom from localStorage (client-only)
-		let saved = 100;
+		let saved = 80;
 		try {
-			const r = parseInt(localStorage.getItem(ZOOM_KEY) || '100', 10);
+			const r = parseInt(localStorage.getItem(ZOOM_KEY) || '80', 10);
 			if (!Number.isNaN(r)) saved = r;
 		} catch {}
 		applyZoom(saved);
