@@ -8,6 +8,9 @@ categories:
       - name: Claude
         url: https://claude.ai
         logo: https://www.google.com/s2/favicons?domain=claude.ai&sz=128
+      - name: Copilot Studio
+        url: https://copilotstudio.microsoft.com
+        logo: https://www.google.com/s2/favicons?domain=copilotstudio.microsoft.com&sz=128
       - name: Gemini
         url: https://gemini.google.com
         logo: https://www.google.com/s2/favicons?domain=gemini.google.com&sz=128
