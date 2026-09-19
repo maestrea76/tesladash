@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import {
 		decryptProfile,
 		dummyKdf,
@@ -18,18 +19,33 @@
 	let busy = $state(false);
 	let error = $state('');
 	let sessionUser = $state('');
+	let lastCatNames: string[] = [];
 
 	function emit(payload: ProfilePayload | null) {
 		window.dispatchEvent(new CustomEvent('tesdash:profile', { detail: payload }));
 	}
 
-	$effect(() => {
+	function stripProfileDom() {
+		document.querySelectorAll('[data-profile-app]').forEach((el) => el.remove());
+		for (const name of lastCatNames) {
+			const section = document.querySelector<HTMLElement>(`[data-category="${CSS.escape(name)}"]`);
+			const grid = section?.querySelector('.grid');
+			if (section && grid && !grid.querySelector('.card')) {
+				section.remove();
+				document.querySelector(`#cat-switches [data-cat="${CSS.escape(name)}"]`)?.remove();
+			}
+		}
+		lastCatNames = [];
+	}
+
+	onMount(() => {
 		try {
 			const raw = sessionStorage.getItem(SESSION_KEY);
 			if (!raw) return;
 			const payload = JSON.parse(raw) as ProfilePayload;
 			if (payload?.user && payload.categories) {
 				sessionUser = payload.user;
+				lastCatNames = payload.categories.map((c) => c.name);
 				emit(payload);
 			}
 		} catch {}
@@ -55,6 +71,7 @@
 			const payload = await decryptProfile(u, password, env);
 			sessionStorage.setItem(SESSION_KEY, JSON.stringify(payload));
 			sessionUser = payload.user;
+			lastCatNames = payload.categories.map((c) => c.name);
 			password = '';
 			open = false;
 			emit(payload);
@@ -67,6 +84,7 @@
 
 	function logout() {
 		sessionStorage.removeItem(SESSION_KEY);
+		stripProfileDom();
 		sessionUser = '';
 		user = '';
 		password = '';

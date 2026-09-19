@@ -1624,7 +1624,7 @@ const categories = await Promise.all(
 
 			function injectProfile(payload: { categories?: { name: string; apps: { name: string; url: string; logo: string; color?: string }[] }[] } | null) {
 				clearProfileApps();
-				if (!payload?.categories) return;
+				if (!payload?.categories?.length) return;
 				for (const cat of payload.categories) {
 					const section = getOrCreateCategorySection(cat.name);
 					if (!section.querySelector('.card:not([data-profile-app])')) section.dataset.profileSection = 'true';
@@ -1640,8 +1640,9 @@ const categories = await Promise.all(
 							category: cat.name,
 							fullscreen: false,
 						});
+						delete card.dataset.customId;
 						card.removeAttribute('data-custom-id');
-						card.setAttribute('data-profile-app', '1');
+						card.dataset.profileApp = '1';
 						insertCardAlphabetically(grid, card, app.name);
 					}
 				}
@@ -1703,6 +1704,7 @@ const categories = await Promise.all(
 				const raw = card.dataset.appJson || card.getAttribute('data-app-json');
 				if (!raw) return;
 				const app = JSON.parse(raw) as {name:string;url:string;logo:string;color:string;category:string};
+				if (card.dataset.profileApp) return;
 				const isCustom = !!card.dataset.customId;
 				editState = { id: card.dataset.customId || app.url, isCustom, originalUrl: app.url };
 
