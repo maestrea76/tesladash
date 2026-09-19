@@ -59,7 +59,7 @@
 			localStorage.setItem(SESSION_KEY, JSON.stringify(payload));
 			if (payload?.user) {
 				sessionUser = payload.user;
-				lastCatNames = payload.categories.map((c) => c.name);
+				lastCatNames = (payload.categories ?? []).map((c) => c.name);
 				emit(payload);
 			}
 		} catch {}
@@ -75,17 +75,26 @@
 		busy = true;
 		try {
 			const id = await profileId(u);
-			const res = await fetch(`${base}/users/${id}.enc`, { cache: 'no-store' });
-			if (!res.ok) {
+			let env: Envelope | null = null;
+			for (const ext of ['json', 'enc'] as const) {
+				const res = await fetch(`${base}/users/${id}.${ext}`, { cache: 'no-store' });
+				if (!res.ok) continue;
+				try {
+					env = JSON.parse(await res.text()) as Envelope;
+					break;
+				} catch {
+					env = null;
+				}
+			}
+			if (!env) {
 				await dummyKdf(password);
 				error = 'usuario o contraseña incorrectos';
 				return;
 			}
-			const env = (await res.json()) as Envelope;
 			const payload = await decryptProfile(u, password, env);
 			localStorage.setItem(SESSION_KEY, JSON.stringify(payload));
 			sessionUser = payload.user;
-			lastCatNames = payload.categories.map((c) => c.name);
+			lastCatNames = (payload.categories ?? []).map((c) => c.name);
 			password = '';
 			open = false;
 			emit(payload);

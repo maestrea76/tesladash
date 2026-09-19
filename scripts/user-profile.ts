@@ -47,9 +47,12 @@ if (!doc || !Array.isArray(doc.categories)) throw new Error(`${appsPath} no tien
 const password = await readPassword();
 const env = await encryptProfile(user, password, { categories: doc.categories });
 const id = await profileId(user);
-const out = join('public', 'users', `${id}.enc`);
-mkdirSync(dirname(out), { recursive: true });
-writeFileSync(out, JSON.stringify(env), 'utf-8');
-console.log(`Perfil cifrado: ${out}`);
+mkdirSync(join('public', 'users'), { recursive: true });
+const jsonOut = join('public', 'users', `${id}.json`);
+const encOut = join('public', 'users', `${id}.enc`);
+const blob = JSON.stringify(env);
+writeFileSync(jsonOut, blob, 'utf-8');
+writeFileSync(encOut, blob, 'utf-8');
+console.log(`Perfil cifrado: ${jsonOut}`);
 console.log('Siguiente: git add public/users && git commit && git push');
 console.log('No subas el YAML en claro ni la contraseña.');

@@ -1550,7 +1550,7 @@ const categories = await Promise.all(
 				fallback.style.color = app.color;
 				if (app.logo) {
 					const img = document.createElement('img');
-					img.src = app.logo;
+					img.src = resolveProfileLogo(app.logo);
 					img.alt = `${app.name} logo`;
 					img.width = 48;
 					img.height = 48;
@@ -1682,7 +1682,7 @@ const categories = await Promise.all(
 							id: `profile:${app.url}`,
 							name: app.name,
 							url: app.url,
-							logo: resolveProfileLogo(app.logo),
+							logo: app.logo,
 							color: app.color || '#8E2C4E',
 							category: cat.name,
 							fullscreen: false,
