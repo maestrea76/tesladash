@@ -1206,6 +1206,11 @@ const categories = await Promise.all(
 			const STORAGE_KEY = 'tesdash-category-order';
 			const container = document.getElementById('categories') as HTMLElement;
 
+			function attrSel(name: string, value: string): string {
+				const v = String(value ?? '').replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+				return `[${name}="${v}"]`;
+			}
+
 			function getSections() {
 				return [...container.querySelectorAll<HTMLElement>('.category')];
 			}
@@ -1449,7 +1454,7 @@ const categories = await Promise.all(
 					const active = vis[cat] !== false;
 					btn.setAttribute('aria-pressed', active ? 'true' : 'false');
 					btn.classList.toggle('active', active);
-					const section = container.querySelector<HTMLElement>(`[data-category="${CSS.escape(cat)}"]`);
+					const section = container.querySelector<HTMLElement>(attrSel('data-category', cat));
 					if (section) section.style.display = active ? '' : 'none';
 				});
 			}
@@ -1513,7 +1518,7 @@ const categories = await Promise.all(
 			}
 			function applyHiddenStatic() {
 				loadHiddenStatic().forEach(url => {
-					const card = container.querySelector<HTMLElement>(`.card:not([data-custom-id])[href="${CSS.escape(url)}"]`);
+					const card = container.querySelector<HTMLElement>(`.card:not([data-custom-id])${attrSel('href', url)}`);
 					if (card) card.style.display = 'none';
 				});
 			}
@@ -1586,8 +1591,8 @@ const categories = await Promise.all(
 				return a;
 			}
 
-			function getOrCreateCategorySection(categoryName: string): HTMLElement {
-				let section = container.querySelector<HTMLElement>(`[data-category="${CSS.escape(categoryName)}"]`);
+			function getOrCreateCategorySection(categoryName: string, afterName?: string): HTMLElement {
+				let section = container.querySelector<HTMLElement>(attrSel('data-category', categoryName));
 				if (section) return section;
 				section = document.createElement('section');
 				section.className = 'category';
@@ -1600,7 +1605,9 @@ const categories = await Promise.all(
 				grid.className = 'grid';
 				section.appendChild(title);
 				section.appendChild(grid);
-				container.appendChild(section);
+				const after = afterName ? container.querySelector<HTMLElement>(attrSel('data-category', afterName)) : null;
+				if (after) after.after(section);
+				else container.appendChild(section);
 				initSectionDrag(section);
 				return section;
 			}
@@ -1624,7 +1631,7 @@ const categories = await Promise.all(
 			function ensureCatSwitch(name: string) {
 				const bar = document.getElementById('cat-switches');
 				if (!bar) return;
-				if (bar.querySelector(`[data-cat="${CSS.escape(name)}"]`)) return;
+				if (bar.querySelector(attrSel('data-cat', name))) return;
 				const btn = document.createElement('button');
 				btn.className = 'cat-switch active';
 				btn.dataset.cat = name;
@@ -1640,7 +1647,7 @@ const categories = await Promise.all(
 					if (!grid || !grid.querySelector('.card')) {
 						const name = el.dataset.category;
 						el.remove();
-						document.querySelector(`#cat-switches [data-cat="${CSS.escape(name || '')}"]`)?.remove();
+						document.querySelector(`#cat-switches ${attrSel('data-cat', name || '')}`)?.remove();
 					}
 				});
 			}
@@ -1672,13 +1679,19 @@ const categories = await Promise.all(
 				}
 				activeProfileUser = payload.user ?? activeProfileUser;
 				if (activeProfileUser) adoptGlobalCustomApps(activeProfileUser);
-				if (!payload.categories?.length) {
+				const cats = Array.isArray(payload.categories)
+					? payload.categories
+					: payload.categories
+						? [payload.categories]
+						: [];
+				if (!cats.length) {
+					console.info('[tesladash] perfil sin categorías', payload.user);
 					renderCustomApps();
 					applyCatVisibility();
 					return;
 				}
-				for (const cat of payload.categories) {
-					const section = getOrCreateCategorySection(cat.name);
+				for (const cat of cats) {
+					const section = getOrCreateCategorySection(cat.name, 'IA');
 					if (!section.querySelector('.card:not([data-profile-app])')) section.dataset.profileSection = 'true';
 					ensureCatSwitch(cat.name);
 					const grid = section.querySelector('.grid')!;
@@ -1706,7 +1719,7 @@ const categories = await Promise.all(
 					if (!grid || !grid.querySelector('.card:not([data-custom-id])')) {
 						const name = el.dataset.category;
 						el.remove();
-						document.querySelector(`#cat-switches [data-cat="${CSS.escape(name || '')}"]`)?.remove();
+						document.querySelector(`#cat-switches ${attrSel('data-cat', name || '')}`)?.remove();
 					} else {
 						delete el.dataset.customSection;
 					}
@@ -1733,6 +1746,7 @@ const categories = await Promise.all(
 			window.addEventListener('tesdash:profile', (e: Event) => {
 				injectProfile((e as CustomEvent).detail);
 			});
+			(window as unknown as { __tesladashApplyProfile: typeof injectProfile }).__tesladashApplyProfile = injectProfile;
 			try {
 				const raw = localStorage.getItem('tesdash-profile-session') || sessionStorage.getItem('tesdash-profile-session');
 				if (raw) injectProfile(JSON.parse(raw));

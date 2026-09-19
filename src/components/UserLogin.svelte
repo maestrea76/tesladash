@@ -12,6 +12,7 @@
 	let { base = '' }: { base?: string } = $props();
 
 	const SESSION_KEY = 'tesdash-profile-session';
+	const FP_KEY = 'tesdash-profile-fp';
 	const LONG_PRESS_MS = 600;
 
 	let open = $state(false);
@@ -30,6 +31,27 @@
 
 	function emit(payload: ProfilePayload | null) {
 		window.dispatchEvent(new CustomEvent('tesdash:profile', { detail: payload }));
+		const apply = (window as unknown as { __tesladashApplyProfile?: (p: ProfilePayload | null) => void }).__tesladashApplyProfile;
+		apply?.(payload);
+	}
+
+	function fingerprint(env: Envelope): string {
+		return `${env.salt}|${env.iv}`;
+	}
+
+	async function fetchEnvelope(u: string): Promise<Envelope | null> {
+		const id = await profileId(u);
+		const bust = `t=${Date.now()}`;
+		for (const ext of ['json', 'enc'] as const) {
+			const res = await fetch(`${base}/users/${id}.${ext}?${bust}`, { cache: 'no-store' });
+			if (!res.ok) continue;
+			try {
+				return JSON.parse(await res.text()) as Envelope;
+			} catch {
+				continue;
+			}
+		}
+		return null;
 	}
 
 	function stripProfileDom() {
@@ -48,21 +70,34 @@
 	}
 
 	onMount(() => {
-		try {
-			let raw = localStorage.getItem(SESSION_KEY);
-			if (!raw) {
-				raw = sessionStorage.getItem(SESSION_KEY);
-				if (raw) localStorage.setItem(SESSION_KEY, raw);
-			}
-			if (!raw) return;
-			const payload = JSON.parse(raw) as ProfilePayload;
-			localStorage.setItem(SESSION_KEY, JSON.stringify(payload));
-			if (payload?.user) {
+		void (async () => {
+			try {
+				let raw = localStorage.getItem(SESSION_KEY);
+				if (!raw) {
+					raw = sessionStorage.getItem(SESSION_KEY);
+					if (raw) localStorage.setItem(SESSION_KEY, raw);
+				}
+				if (!raw) return;
+				const payload = JSON.parse(raw) as ProfilePayload;
+				if (!payload?.user) return;
+				const env = await fetchEnvelope(payload.user);
+				if (env) {
+					const fp = fingerprint(env);
+					const prev = localStorage.getItem(FP_KEY);
+					if (prev && prev !== fp) {
+						localStorage.removeItem(SESSION_KEY);
+						localStorage.removeItem(FP_KEY);
+						sessionStorage.removeItem(SESSION_KEY);
+						return;
+					}
+					localStorage.setItem(FP_KEY, fp);
+				}
+				localStorage.setItem(SESSION_KEY, JSON.stringify(payload));
 				sessionUser = payload.user;
 				lastCatNames = (payload.categories ?? []).map((c) => c.name);
 				emit(payload);
-			}
-		} catch {}
+			} catch {}
+		})();
 	});
 
 	async function unlock() {
@@ -74,30 +109,27 @@
 		}
 		busy = true;
 		try {
-			const id = await profileId(u);
-			let env: Envelope | null = null;
-			for (const ext of ['json', 'enc'] as const) {
-				const res = await fetch(`${base}/users/${id}.${ext}`, { cache: 'no-store' });
-				if (!res.ok) continue;
-				try {
-					env = JSON.parse(await res.text()) as Envelope;
-					break;
-				} catch {
-					env = null;
-				}
-			}
+			const env = await fetchEnvelope(u);
 			if (!env) {
 				await dummyKdf(password);
 				error = 'usuario o contraseña incorrectos';
 				return;
 			}
 			const payload = await decryptProfile(u, password, env);
-			localStorage.setItem(SESSION_KEY, JSON.stringify(payload));
+			const cats = Array.isArray(payload.categories) ? payload.categories : [];
+			const nApps = cats.reduce((n, c) => n + (c.apps?.length ?? 0), 0);
+			localStorage.setItem(SESSION_KEY, JSON.stringify({ ...payload, categories: cats }));
+			localStorage.setItem(FP_KEY, fingerprint(env));
 			sessionUser = payload.user;
-			lastCatNames = (payload.categories ?? []).map((c) => c.name);
+			lastCatNames = cats.map((c) => c.name);
 			password = '';
-			open = false;
-			emit(payload);
+			emit({ ...payload, categories: cats });
+			if (nApps === 0) {
+				error = 'Sesión ok, pero el perfil no trae ninguna app.';
+				open = true;
+			} else {
+				open = false;
+			}
 		} catch {
 			error = 'usuario o contraseña incorrectos';
 		} finally {
@@ -107,6 +139,7 @@
 
 	function logout() {
 		localStorage.removeItem(SESSION_KEY);
+		localStorage.removeItem(FP_KEY);
 		sessionStorage.removeItem(SESSION_KEY);
 		stripProfileDom();
 		sessionUser = '';
