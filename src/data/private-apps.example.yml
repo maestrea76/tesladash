@@ -1,3 +1,9 @@
 # Copia a private-apps.yml (gitignored) y rellena tus apps.
 # Luego: bun run user:profile -- --user TU_USUARIO --apps src/data/private-apps.yml
-categories: []
+categories:
+  - name: Social Media
+    apps:
+      - name: Panel
+        url: https://example.com
+        logo: /logos/insights.svg
+        color: "#E4405F"

@@ -1654,7 +1654,33 @@ const categories = await Promise.all(
 
 			function clearProfileApps() {
 				document.querySelectorAll('[data-profile-app], .card-profile').forEach((el) => el.remove());
+				container.querySelectorAll<HTMLElement>('.card[data-static-hidden]').forEach((card) => {
+					card.style.display = '';
+					delete card.dataset.staticHidden;
+				});
 				removeEmptyUserSections();
+			}
+
+			function hideStaticNamed(name: string) {
+				container.querySelectorAll<HTMLElement>('.card:not([data-profile-app]):not([data-custom-id])').forEach((card) => {
+					const n = card.querySelector('.app-name')?.textContent?.trim();
+					if (n === name) {
+						card.style.display = 'none';
+						card.dataset.staticHidden = '1';
+					}
+				});
+			}
+
+			function normalizeProfileCats(cats: { name: string; apps: { name: string; url: string; logo: string; color?: string }[] }[]) {
+				const out: typeof cats = [];
+				for (const cat of cats) {
+					const raw = cat.name.trim();
+					const name = /hoy\s*me\s*gusto/i.test(raw) ? 'Social Media' : raw;
+					const prev = out.find((c) => c.name === name);
+					if (prev) prev.apps.push(...cat.apps);
+					else out.push({ name, apps: [...cat.apps] });
+				}
+				return out;
 			}
 
 			function adoptGlobalCustomApps(user: string) {
@@ -1679,11 +1705,13 @@ const categories = await Promise.all(
 				}
 				activeProfileUser = payload.user ?? activeProfileUser;
 				if (activeProfileUser) adoptGlobalCustomApps(activeProfileUser);
-				const cats = Array.isArray(payload.categories)
-					? payload.categories
-					: payload.categories
-						? [payload.categories]
-						: [];
+				const cats = normalizeProfileCats(
+					Array.isArray(payload.categories)
+						? payload.categories
+						: payload.categories
+							? [payload.categories]
+							: [],
+				);
 				if (!cats.length) {
 					console.info('[tesladash] perfil sin categorías', payload.user);
 					renderCustomApps();
@@ -1696,6 +1724,7 @@ const categories = await Promise.all(
 					ensureCatSwitch(cat.name);
 					const grid = section.querySelector('.grid')!;
 					for (const app of cat.apps) {
+						hideStaticNamed(app.name);
 						const card = createCustomCard({
 							id: `profile:${app.url}`,
 							name: app.name,
