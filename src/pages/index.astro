@@ -1466,6 +1466,7 @@ const categories = await Promise.all(
 			// ── Custom Apps ──
 			const CUSTOM_KEY = 'tesdash-custom-apps';
 			const HIDDEN_STATIC_KEY = 'tesdash-hidden-static';
+			let activeProfileUser: string | null = null;
 
 			interface CustomApp {
 				id: string;
@@ -1477,12 +1478,29 @@ const categories = await Promise.all(
 				fullscreen: boolean;
 			}
 
+			function customStoreKey(): string {
+				return activeProfileUser ? `${CUSTOM_KEY}:${activeProfileUser}` : CUSTOM_KEY;
+			}
 			function loadCustomApps(): CustomApp[] {
-				try { return JSON.parse(localStorage.getItem(CUSTOM_KEY) || '[]'); }
-				catch { return []; }
+				if (!activeProfileUser) {
+					try { return JSON.parse(localStorage.getItem(CUSTOM_KEY) || '[]'); }
+					catch { return []; }
+				}
+				try {
+					const userKey = `${CUSTOM_KEY}:${activeProfileUser}`;
+					const userApps: CustomApp[] = JSON.parse(localStorage.getItem(userKey) || '[]');
+					if (userApps.length) return userApps;
+					const global: CustomApp[] = JSON.parse(localStorage.getItem(CUSTOM_KEY) || '[]');
+					if (global.length) {
+						localStorage.setItem(userKey, JSON.stringify(global));
+						localStorage.removeItem(CUSTOM_KEY);
+						return global;
+					}
+					return [];
+				} catch { return []; }
 			}
 			function saveCustomApps(apps: CustomApp[]) {
-				localStorage.setItem(CUSTOM_KEY, JSON.stringify(apps));
+				localStorage.setItem(customStoreKey(), JSON.stringify(apps));
 			}
 			function loadHiddenStatic(): string[] {
 				try { return JSON.parse(localStorage.getItem(HIDDEN_STATIC_KEY) || '[]'); }
@@ -1506,14 +1524,15 @@ const categories = await Promise.all(
 				else grid.appendChild(card);
 			}
 
-			function createCustomCard(app: CustomApp): HTMLAnchorElement {
+			function createCustomCard(app: CustomApp, kind: 'custom' | 'profile' = 'custom'): HTMLAnchorElement {
 				const a = document.createElement('a');
 				a.href = app.url;
 				a.target = '_blank';
 				a.rel = 'noopener noreferrer';
-				a.className = 'card';
+				a.className = kind === 'profile' ? 'card card-profile' : 'card';
 				a.style.setProperty('--app-color', app.color);
-				a.dataset.customId = app.id;
+				if (kind === 'profile') a.dataset.profileApp = '1';
+				else a.dataset.customId = app.id;
 				a.dataset.appJson = JSON.stringify({name: app.name, url: app.url, logo: app.logo, color: app.color, category: app.category});
 
 				const spotlight = document.createElement('span');
@@ -1610,23 +1629,44 @@ const categories = await Promise.all(
 				bindCatSwitch(btn);
 			}
 
-			function clearProfileApps() {
-				document.querySelectorAll('[data-profile-app]').forEach((el) => el.remove());
-				document.querySelectorAll<HTMLElement>('.category[data-profile-section]').forEach((el) => {
+			function removeEmptyUserSections() {
+				document.querySelectorAll<HTMLElement>('.category[data-profile-section], .category[data-custom-section]').forEach((el) => {
 					const grid = el.querySelector('.grid');
 					if (!grid || !grid.querySelector('.card')) {
 						const name = el.dataset.category;
 						el.remove();
 						document.querySelector(`#cat-switches [data-cat="${CSS.escape(name || '')}"]`)?.remove();
-					} else {
-						delete el.dataset.profileSection;
 					}
 				});
 			}
 
-			function injectProfile(payload: { categories?: { name: string; apps: { name: string; url: string; logo: string; color?: string }[] }[] } | null) {
+			function clearProfileApps() {
+				document.querySelectorAll('[data-profile-app], .card-profile').forEach((el) => el.remove());
+				removeEmptyUserSections();
+			}
+
+			function adoptGlobalCustomApps(user: string) {
+				try {
+					const userKey = `${CUSTOM_KEY}:${user}`;
+					const userApps: CustomApp[] = JSON.parse(localStorage.getItem(userKey) || '[]');
+					if (userApps.length) return;
+					const global: CustomApp[] = JSON.parse(localStorage.getItem(CUSTOM_KEY) || '[]');
+					if (!global.length) return;
+					localStorage.setItem(userKey, JSON.stringify(global));
+					localStorage.removeItem(CUSTOM_KEY);
+				} catch {}
+			}
+
+			function injectProfile(payload: { user?: string; categories?: { name: string; apps: { name: string; url: string; logo: string; color?: string }[] }[] } | null) {
 				clearProfileApps();
-				if (!payload?.categories?.length) return;
+				if (!payload?.categories?.length) {
+					if (activeProfileUser) adoptGlobalCustomApps(activeProfileUser);
+					activeProfileUser = null;
+					renderCustomApps();
+					return;
+				}
+				activeProfileUser = payload.user ?? activeProfileUser;
+				if (activeProfileUser) adoptGlobalCustomApps(activeProfileUser);
 				for (const cat of payload.categories) {
 					const section = getOrCreateCategorySection(cat.name);
 					if (!section.querySelector('.card:not([data-profile-app])')) section.dataset.profileSection = 'true';
@@ -1641,19 +1681,26 @@ const categories = await Promise.all(
 							color: app.color || '#8E2C4E',
 							category: cat.name,
 							fullscreen: false,
-						});
-						delete card.dataset.customId;
-						card.removeAttribute('data-custom-id');
-						card.dataset.profileApp = '1';
+						}, 'profile');
 						insertCardAlphabetically(grid, card, app.name);
 					}
 				}
+				renderCustomApps();
 				applyCatVisibility();
 			}
 
 			function renderCustomApps() {
 				document.querySelectorAll<HTMLElement>('[data-custom-id]').forEach(el => el.remove());
-				document.querySelectorAll<HTMLElement>('.category[data-custom-section]').forEach(el => el.remove());
+				document.querySelectorAll<HTMLElement>('.category[data-custom-section]').forEach(el => {
+					const grid = el.querySelector('.grid');
+					if (!grid || !grid.querySelector('.card:not([data-custom-id])')) {
+						const name = el.dataset.category;
+						el.remove();
+						document.querySelector(`#cat-switches [data-cat="${CSS.escape(name || '')}"]`)?.remove();
+					} else {
+						delete el.dataset.customSection;
+					}
+				});
 				const apps = loadCustomApps();
 				apps.forEach(app => {
 					const section = getOrCreateCategorySection(app.category);

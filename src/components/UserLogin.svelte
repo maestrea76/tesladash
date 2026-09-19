@@ -33,15 +33,17 @@
 	}
 
 	function stripProfileDom() {
-		document.querySelectorAll('[data-profile-app]').forEach((el) => el.remove());
-		for (const name of lastCatNames) {
-			const section = document.querySelector<HTMLElement>(`[data-category="${CSS.escape(name)}"]`);
-			const grid = section?.querySelector('.grid');
-			if (section && grid && !grid.querySelector('.card')) {
+		document.querySelectorAll('[data-profile-app], .card-profile, [data-custom-id]').forEach((el) => el.remove());
+		const names = new Set(lastCatNames);
+		document.querySelectorAll<HTMLElement>('#categories .category').forEach((section) => {
+			const name = section.dataset.category || '';
+			const grid = section.querySelector('.grid');
+			const empty = !grid || !grid.querySelector('.card');
+			if (empty && (names.has(name) || section.dataset.profileSection || section.dataset.customSection)) {
 				section.remove();
 				document.querySelector(`#cat-switches [data-cat="${CSS.escape(name)}"]`)?.remove();
 			}
-		}
+		});
 		lastCatNames = [];
 	}
 
