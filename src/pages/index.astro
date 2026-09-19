@@ -1724,7 +1724,7 @@ const categories = await Promise.all(
 				injectProfile((e as CustomEvent).detail);
 			});
 			try {
-				const raw = sessionStorage.getItem('tesdash-profile-session');
+				const raw = localStorage.getItem('tesdash-profile-session') || sessionStorage.getItem('tesdash-profile-session');
 				if (raw) injectProfile(JSON.parse(raw));
 			} catch {}
 

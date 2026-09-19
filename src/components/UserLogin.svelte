@@ -49,7 +49,11 @@
 
 	onMount(() => {
 		try {
-			const raw = sessionStorage.getItem(SESSION_KEY);
+			let raw = localStorage.getItem(SESSION_KEY);
+			if (!raw) {
+				raw = sessionStorage.getItem(SESSION_KEY);
+				if (raw) localStorage.setItem(SESSION_KEY, raw);
+			}
 			if (!raw) return;
 			const payload = JSON.parse(raw) as ProfilePayload;
 			if (payload?.user && payload.categories) {
@@ -78,7 +82,7 @@
 			}
 			const env = (await res.json()) as Envelope;
 			const payload = await decryptProfile(u, password, env);
-			sessionStorage.setItem(SESSION_KEY, JSON.stringify(payload));
+			localStorage.setItem(SESSION_KEY, JSON.stringify(payload));
 			sessionUser = payload.user;
 			lastCatNames = payload.categories.map((c) => c.name);
 			password = '';
@@ -92,6 +96,7 @@
 	}
 
 	function logout() {
+		localStorage.removeItem(SESSION_KEY);
 		sessionStorage.removeItem(SESSION_KEY);
 		stripProfileDom();
 		sessionUser = '';

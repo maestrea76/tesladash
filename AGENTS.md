@@ -26,7 +26,7 @@ GitHub Pages: https://maestrea76.github.io/tesladash/
 - Generar blob: `bun run user:profile -- --user <nombre> --apps src/data/private-apps.yml` (contraseña por `TESLADASH_PROFILE_PASSWORD` o prompt).
 - El `.enc` en `public/users/` **sí** va a git. Nunca la contraseña ni el YAML en claro.
 - Cifrado: Argon2id (32 MiB, 3 pases) + AES-256-GCM. AAD liga el ciphertext al usuario.
-- En el dash: botón **Perfil**. Sin login no se ven esas apps. La sesión vive en `sessionStorage` (no la contraseña).
+- En el dash: botón **Perfil**. Sin login no se ven esas apps. La sesión (no la contraseña) vive en `localStorage` hasta que se cierre a propósito.
 - `/me` y `config.me.yml` no son el mecanismo de privacidad.
 - Añadir/quitar apps públicas: editar `config.yml`. Logos en `public/logos/` (`/logos/…`) o URL remota.
 - `color` opcional (si falta, se extrae del logo). `regions` oculta la app fuera de esos países.
