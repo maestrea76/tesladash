@@ -152,11 +152,13 @@ const categories = await Promise.all(
 					))}
 				</div>
 				<div class="header-right">
-					<button class="header-btn lang-btn" id="lang-btn" title="Language & Region">
-						<span id="lang-current">🇬🇧 EN</span>
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-					</button>
-					<UserLogin client:load base={base} />
+					<div class="header-pills">
+						<button class="header-btn lang-btn" id="lang-btn" title="Language & Region">
+							<span id="lang-current">🇬🇧 EN</span>
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+						</button>
+						<UserLogin client:load base={base} />
+					</div>
 					<Clock client:load />
 				</div>
 			</header>
@@ -2032,6 +2034,13 @@ const categories = await Promise.all(
 		flex-direction: column;
 		align-items: flex-end;
 		gap: 0.5rem;
+	}
+
+	.header-pills {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 0.4rem;
 	}
 
 	.lang-btn {

@@ -12,14 +12,21 @@
 	let { base = '' }: { base?: string } = $props();
 
 	const SESSION_KEY = 'tesdash-profile-session';
+	const LONG_PRESS_MS = 600;
 
 	let open = $state(false);
+	let confirmOpen = $state(false);
 	let user = $state('');
 	let password = $state('');
 	let busy = $state(false);
 	let error = $state('');
 	let sessionUser = $state('');
+	let holding = $state(false);
 	let lastCatNames: string[] = [];
+
+	let lpTimer: ReturnType<typeof setTimeout> | null = null;
+	let lpStartX = 0;
+	let lpStartY = 0;
 
 	function emit(payload: ProfilePayload | null) {
 		window.dispatchEvent(new CustomEvent('tesdash:profile', { detail: payload }));
@@ -88,7 +95,41 @@
 		sessionUser = '';
 		user = '';
 		password = '';
+		confirmOpen = false;
+		holding = false;
 		emit(null);
+	}
+
+	function cancelLp() {
+		if (lpTimer) {
+			clearTimeout(lpTimer);
+			lpTimer = null;
+		}
+		holding = false;
+	}
+
+	function onNameDown(e: PointerEvent) {
+		e.preventDefault();
+		e.stopPropagation();
+		const el = e.currentTarget as HTMLElement;
+		el.setPointerCapture(e.pointerId);
+		lpStartX = e.clientX;
+		lpStartY = e.clientY;
+		holding = true;
+		lpTimer = setTimeout(() => {
+			lpTimer = null;
+			holding = false;
+			confirmOpen = true;
+		}, LONG_PRESS_MS);
+	}
+
+	function onNameMove(e: PointerEvent) {
+		if (!lpTimer) return;
+		if (Math.hypot(e.clientX - lpStartX, e.clientY - lpStartY) > 10) cancelLp();
+	}
+
+	function onNameUp() {
+		cancelLp();
 	}
 
 	function onKey(e: KeyboardEvent) {
@@ -97,7 +138,20 @@
 </script>
 
 {#if sessionUser}
-	<button class="header-btn profile-btn" type="button" onclick={logout} title="Cerrar sesión">
+	<button
+		class="header-btn profile-btn"
+		class:holding
+		type="button"
+		title="Mantén pulsado para cerrar sesión"
+		onpointerdown={onNameDown}
+		onpointermove={onNameMove}
+		onpointerup={onNameUp}
+		onpointercancel={onNameUp}
+		onclick={(e) => {
+			e.preventDefault();
+			e.stopPropagation();
+		}}
+	>
 		{sessionUser}
 	</button>
 {:else}
@@ -133,11 +187,34 @@
 	</div>
 {/if}
 
+{#if confirmOpen}
+	<div class="overlay" role="dialog" aria-modal="true" aria-labelledby="logout-title">
+		<div class="box">
+			<button class="close" type="button" onclick={() => (confirmOpen = false)} aria-label="Cerrar">&times;</button>
+			<h2 id="logout-title" class="title">Cerrar sesión</h2>
+			<p class="hint">Se ocultarán las apps privadas de {sessionUser}.</p>
+			<div class="confirm-row">
+				<button class="go ghost" type="button" onclick={() => (confirmOpen = false)}>Cancelar</button>
+				<button class="go" type="button" onclick={logout}>Cerrar sesión</button>
+			</div>
+		</div>
+	</div>
+{/if}
+
 <style>
 	.profile-btn {
 		font-family: inherit;
 		text-transform: none;
-		letter-spacing: 0.02em;
+		letter-spacing: 0.04em;
+		touch-action: none;
+		user-select: none;
+		-webkit-user-select: none;
+	}
+
+	.profile-btn.holding {
+		border-color: var(--red, #cc0000);
+		color: var(--text, #fff);
+		transform: scale(1.05);
 	}
 
 	.overlay {
@@ -227,5 +304,21 @@
 	.go:disabled {
 		opacity: 0.65;
 		cursor: wait;
+	}
+
+	.go.ghost {
+		background: transparent;
+		border: 1px solid var(--border, #444);
+		color: var(--muted, #aaa);
+	}
+
+	.confirm-row {
+		display: flex;
+		gap: 0.6rem;
+	}
+
+	.confirm-row .go {
+		flex: 1;
+		margin-top: 0.5rem;
 	}
 </style>
