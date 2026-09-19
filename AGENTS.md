@@ -21,7 +21,7 @@ GitHub Pages: https://maestrea76.github.io/tesladash/
 | `/me` | `src/pages/me.astro` + `src/data/config.me.yml` | Resto del fork. No usarlo para apps privadas. |
 | `/legal` | `src/pages/legal.astro` | Aviso legal (upstream). |
 
-- Apps **privadas** (Hoy me gusto, HA local, etc.): perfil cifrado, no `config.yml`.
+- Apps **privadas** (HA local, etc.): perfil cifrado, no `config.yml`.
 - YAML en claro: `src/data/private-apps.yml` (gitignored). Plantilla: `private-apps.example.yml`.
 - Generar blob: `bun run user:profile -- --user <nombre> --apps src/data/private-apps.yml` (contraseña por `TESLADASH_PROFILE_PASSWORD` o prompt).
 - El `.enc` en `public/users/` **sí** va a git. Nunca la contraseña ni el YAML en claro.

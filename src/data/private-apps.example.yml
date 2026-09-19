@@ -1,9 +1,3 @@
 # Copia a private-apps.yml (gitignored) y rellena tus apps.
 # Luego: bun run user:profile -- --user TU_USUARIO --apps src/data/private-apps.yml
-categories:
-  - name: Hoy me gusto
-    apps:
-      - name: Panel
-        url: https://maestre76.com/hoymegusto/panel/
-        logo: /logos/hoymegusto.svg
-        color: "#8E2C4E"
+categories: []

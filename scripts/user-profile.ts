@@ -42,7 +42,7 @@ if (!user) {
 
 const raw = readFileSync(appsPath, 'utf-8');
 const doc = yaml.load(raw) as AppsFile;
-if (!doc?.categories?.length) throw new Error(`${appsPath} no tiene categories`);
+if (!doc || !Array.isArray(doc.categories)) throw new Error(`${appsPath} no tiene categories`);
 
 const password = await readPassword();
 const env = await encryptProfile(user, password, { categories: doc.categories });

@@ -32,6 +32,13 @@
 		window.dispatchEvent(new CustomEvent('tesdash:profile', { detail: payload }));
 	}
 
+	function sanitizePayload(payload: ProfilePayload): ProfilePayload {
+		const categories = (payload.categories || []).filter(
+			(c) => c.name.trim().toLowerCase() !== 'hoy me gusto',
+		);
+		return { ...payload, categories };
+	}
+
 	function stripProfileDom() {
 		document.querySelectorAll('[data-profile-app], .card-profile, [data-custom-id]').forEach((el) => el.remove());
 		const names = new Set(lastCatNames);
@@ -55,8 +62,9 @@
 				if (raw) localStorage.setItem(SESSION_KEY, raw);
 			}
 			if (!raw) return;
-			const payload = JSON.parse(raw) as ProfilePayload;
-			if (payload?.user && payload.categories) {
+			const payload = sanitizePayload(JSON.parse(raw) as ProfilePayload);
+			localStorage.setItem(SESSION_KEY, JSON.stringify(payload));
+			if (payload?.user) {
 				sessionUser = payload.user;
 				lastCatNames = payload.categories.map((c) => c.name);
 				emit(payload);
@@ -81,7 +89,7 @@
 				return;
 			}
 			const env = (await res.json()) as Envelope;
-			const payload = await decryptProfile(u, password, env);
+			const payload = sanitizePayload(await decryptProfile(u, password, env));
 			localStorage.setItem(SESSION_KEY, JSON.stringify(payload));
 			sessionUser = payload.user;
 			lastCatNames = payload.categories.map((c) => c.name);
