@@ -319,6 +319,7 @@ const categories = await Promise.all(
 					</div>
 					<p class="form-error" id="form-error" style="display:none"></p>
 					<div class="form-actions">
+						<button type="button" class="form-btn form-btn-delete" id="app-delete-btn" style="display:none">Delete</button>
 						<button type="button" class="form-btn form-btn-cancel" data-close="modal-add-app">Cancel</button>
 						<button type="submit" id="add-app-submit-btn" class="form-btn form-btn-submit">Add App</button>
 					</div>
@@ -1551,20 +1552,10 @@ const categories = await Promise.all(
 				menuBtn.setAttribute('aria-label', `Edit ${app.name}`);
 				menuBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>`;
 
-				const deleteBtn = document.createElement('button');
-				deleteBtn.className = 'card-delete';
-				deleteBtn.setAttribute('aria-label', `Delete ${app.name}`);
-				deleteBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>`;
-				deleteBtn.addEventListener('click', (e) => {
-					e.preventDefault(); e.stopPropagation();
-					deleteCustomApp(app.id);
-				});
-
 				a.appendChild(spotlight);
 				a.appendChild(borderGlow);
 				a.appendChild(inner);
 				a.appendChild(menuBtn);
-				a.appendChild(deleteBtn);
 				attachSpotlight(a);
 				return a;
 			}
@@ -1651,7 +1642,6 @@ const categories = await Promise.all(
 						});
 						card.removeAttribute('data-custom-id');
 						card.setAttribute('data-profile-app', '1');
-						card.querySelector('.card-delete')?.remove();
 						insertCardAlphabetically(grid, card, app.name);
 					}
 				}
@@ -1726,6 +1716,8 @@ const categories = await Promise.all(
 				(document.getElementById('app-fullscreen-hint') as HTMLElement).textContent = 'Opens in a new tab';
 				(document.getElementById('add-app-title') as HTMLElement).textContent = 'Edit App';
 				(document.getElementById('add-app-submit-btn') as HTMLElement).textContent = 'Save';
+				const delBtn = document.getElementById('app-delete-btn') as HTMLElement;
+				delBtn.style.display = isCustom ? '' : 'none';
 				openModal('modal-add-app');
 			}
 
@@ -1768,9 +1760,11 @@ const categories = await Promise.all(
 
 			// Block accidental card navigation when releasing on menu btn
 			container.addEventListener('click', (e) => {
-				if ((e.target as Element).closest('.card-menu')) {
-					e.preventDefault(); e.stopPropagation();
-				}
+				const menuBtn = (e.target as Element).closest<HTMLElement>('.card-menu');
+				if (!menuBtn) return;
+				e.preventDefault(); e.stopPropagation();
+				const card = menuBtn.closest<HTMLAnchorElement>('.card');
+				if (card) openEditModal(card);
 			});
 
 			// ── Add App Form ──
@@ -1785,6 +1779,7 @@ const categories = await Promise.all(
 				(document.getElementById('app-fullscreen-hint') as HTMLElement).textContent = 'Opens in a new tab';
 				(document.getElementById('add-app-title') as HTMLElement).textContent = 'Add App';
 				(document.getElementById('add-app-submit-btn') as HTMLElement).textContent = 'Add App';
+				(document.getElementById('app-delete-btn') as HTMLElement).style.display = 'none';
 				openModal('modal-add-app');
 			});
 
@@ -1795,6 +1790,13 @@ const categories = await Promise.all(
 			document.getElementById('app-category')?.addEventListener('change', (e) => {
 				const val = (e.target as HTMLSelectElement).value;
 				(document.getElementById('new-cat-row') as HTMLElement).style.display = val === '__new__' ? '' : 'none';
+			});
+
+			document.getElementById('app-delete-btn')?.addEventListener('click', () => {
+				if (!editState?.isCustom) return;
+				deleteCustomApp(editState.id);
+				editState = null;
+				closeModal('modal-add-app');
 			});
 
 			document.getElementById('add-app-form')?.addEventListener('submit', (e) => {
@@ -2519,35 +2521,6 @@ const categories = await Promise.all(
 
 	.fab svg { width: 30px; height: 30px; }
 
-	/* ── Card delete button ── */
-	.card-delete {
-		position: absolute;
-		top: 0.5rem;
-		right: 0.5rem;
-		z-index: 2;
-		width: 28px;
-		height: 28px;
-		border-radius: 50%;
-		background: rgba(0, 0, 0, 0.6);
-		border: 1px solid var(--border);
-		color: var(--muted);
-		cursor: pointer;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		opacity: 0;
-		transition: opacity 150ms ease, background 150ms ease, color 150ms ease;
-	}
-
-	.card:hover .card-delete,
-	.card.touching .card-delete { opacity: 1; }
-
-	.card-delete:hover {
-		background: rgba(229, 9, 20, 0.8);
-		color: #fff;
-		border-color: transparent;
-	}
-
 	.card-menu {
 		position: absolute;
 		top: 0.3rem;
@@ -2580,8 +2553,6 @@ const categories = await Promise.all(
 		color: var(--red);
 		transform: scale(1.2);
 	}
-
-	.card-delete svg { width: 12px; height: 12px; }
 
 	/* ── Add App Form ── */
 	.form-row {
@@ -2773,8 +2744,21 @@ const categories = await Promise.all(
 	.form-actions {
 		display: flex;
 		justify-content: flex-end;
+		align-items: center;
 		gap: 0.6rem;
 		margin-top: 1.25rem;
+	}
+
+	.form-btn-delete {
+		margin-right: auto;
+		background: transparent;
+		color: var(--red);
+		border: 1px solid color-mix(in srgb, var(--red) 45%, var(--border));
+	}
+
+	.form-btn-delete:hover {
+		background: color-mix(in srgb, var(--red) 18%, transparent);
+		color: #fff;
 	}
 
 	.form-btn {
