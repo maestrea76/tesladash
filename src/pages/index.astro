@@ -5,6 +5,7 @@ import yaml from 'js-yaml';
 import sharp from 'sharp';
 import Clock from '../components/Clock.svelte';
 import UrlLauncher from '../components/UrlLauncher.svelte';
+import UserLogin from '../components/UserLogin.svelte';
 import { Font } from 'astro:assets';
 import ClientRouter from 'astro/components/ClientRouter.astro';
 
@@ -112,7 +113,7 @@ const categories = await Promise.all(
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-base={base}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -155,6 +156,7 @@ const categories = await Promise.all(
 						<span id="lang-current">🇬🇧 EN</span>
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
 					</button>
+					<UserLogin client:load base={base} />
 					<Clock client:load />
 				</div>
 			</header>
@@ -1586,6 +1588,76 @@ const categories = await Promise.all(
 				return section;
 			}
 
+			function resolveProfileLogo(logo: string): string {
+				const b = document.documentElement.dataset.base || '';
+				if (logo.startsWith('/') && !logo.startsWith('//')) return `${b}${logo}`;
+				return logo;
+			}
+
+			function bindCatSwitch(btn: HTMLElement) {
+				btn.addEventListener('click', () => {
+					const cat = btn.dataset.cat!;
+					const vis = loadCatVis();
+					vis[cat] = vis[cat] === false ? true : false;
+					localStorage.setItem(CAT_VIS_KEY, JSON.stringify(vis));
+					applyCatVisibility();
+				});
+			}
+
+			function ensureCatSwitch(name: string) {
+				const bar = document.getElementById('cat-switches');
+				if (!bar) return;
+				if (bar.querySelector(`[data-cat="${CSS.escape(name)}"]`)) return;
+				const btn = document.createElement('button');
+				btn.className = 'cat-switch active';
+				btn.dataset.cat = name;
+				btn.textContent = name;
+				btn.setAttribute('aria-pressed', 'true');
+				bar.appendChild(btn);
+				bindCatSwitch(btn);
+			}
+
+			function clearProfileApps() {
+				document.querySelectorAll('[data-profile-app]').forEach((el) => el.remove());
+				document.querySelectorAll<HTMLElement>('.category[data-profile-section]').forEach((el) => {
+					const grid = el.querySelector('.grid');
+					if (!grid || !grid.querySelector('.card')) {
+						const name = el.dataset.category;
+						el.remove();
+						document.querySelector(`#cat-switches [data-cat="${CSS.escape(name || '')}"]`)?.remove();
+					} else {
+						delete el.dataset.profileSection;
+					}
+				});
+			}
+
+			function injectProfile(payload: { categories?: { name: string; apps: { name: string; url: string; logo: string; color?: string }[] }[] } | null) {
+				clearProfileApps();
+				if (!payload?.categories) return;
+				for (const cat of payload.categories) {
+					const section = getOrCreateCategorySection(cat.name);
+					if (!section.querySelector('.card:not([data-profile-app])')) section.dataset.profileSection = 'true';
+					ensureCatSwitch(cat.name);
+					const grid = section.querySelector('.grid')!;
+					for (const app of cat.apps) {
+						const card = createCustomCard({
+							id: `profile:${app.url}`,
+							name: app.name,
+							url: app.url,
+							logo: resolveProfileLogo(app.logo),
+							color: app.color || '#8E2C4E',
+							category: cat.name,
+							fullscreen: false,
+						});
+						card.removeAttribute('data-custom-id');
+						card.setAttribute('data-profile-app', '1');
+						card.querySelector('.card-delete')?.remove();
+						insertCardAlphabetically(grid, card, app.name);
+					}
+				}
+				applyCatVisibility();
+			}
+
 			function renderCustomApps() {
 				document.querySelectorAll<HTMLElement>('[data-custom-id]').forEach(el => el.remove());
 				document.querySelectorAll<HTMLElement>('.category[data-custom-section]').forEach(el => el.remove());
@@ -1607,6 +1679,14 @@ const categories = await Promise.all(
 			}
 
 			renderCustomApps();
+
+			window.addEventListener('tesdash:profile', (e: Event) => {
+				injectProfile((e as CustomEvent).detail);
+			});
+			try {
+				const raw = sessionStorage.getItem('tesdash-profile-session');
+				if (raw) injectProfile(JSON.parse(raw));
+			} catch {}
 
 			// ── Edit App ──
 			interface EditState { id: string; isCustom: boolean; originalUrl: string; }

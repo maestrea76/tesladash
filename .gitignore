@@ -14,6 +14,7 @@ node_modules/
 
 # Personal config (never commit — contains private URLs)
 src/data/config.me.yml
+src/data/private-apps.yml
 
 # OS
 .DS_Store
