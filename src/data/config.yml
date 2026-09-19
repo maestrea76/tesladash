@@ -25,15 +25,16 @@ categories:
     apps:
       - name: Instagram
         url: https://www.instagram.com
-        logo: https://cdn.simpleicons.org/instagram/E4405F
+        logo: /logos/instagram.webp
         color: "#E4405F"
       - name: TikTok
         url: https://www.tiktok.com
-        logo: https://cdn.simpleicons.org/tiktok
-        color: "#010101"
+        logo: /logos/tiktok.webp
+        color: "#00F2EA"
       - name: X
         url: https://x.com
-        logo: https://cdn.simpleicons.org/x
+        logo: /logos/x.webp
+        color: "#000000"
 
   - name: Información
     apps:
@@ -59,7 +60,8 @@ categories:
         fullscreen: false
       - name: Reddit
         url: https://www.reddit.com
-        logo: https://cdn.simpleicons.org/reddit/FF4500
+        logo: /logos/reddit.webp
+        color: "#FF4500"
       - name: Sofascore
         url: https://www.sofascore.com/es
         logo: https://www.google.com/s2/favicons?domain=sofascore.com&sz=128
@@ -88,8 +90,8 @@ categories:
         color: "#EA4335"
       - name: Home Assistant
         url: https://yourHA:8123
-        logo: https://cdn.simpleicons.org/homeassistant/41BDF5
-        color: "#41BDF5"
+        logo: /logos/home-assistant.webp
+        color: "#18BCF2"
       - name: Outlook
         url: https://outlook.live.com
         logo: https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Microsoft_Outlook_Icon_%282025%E2%80%93present%29.svg/330px-Microsoft_Outlook_Icon_%282025%E2%80%93present%29.svg.png
