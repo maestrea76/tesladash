@@ -1210,13 +1210,29 @@ const categories = await Promise.all(
 			}
 
 			function restoreOrder() {
-				const saved = localStorage.getItem(STORAGE_KEY);
-				if (!saved) return;
-				const order: string[] = JSON.parse(saved);
-				order.forEach(name => {
+				const yamlOrder = getSections().map(s => s.dataset.category!);
+				const savedRaw = localStorage.getItem(STORAGE_KEY);
+				if (!savedRaw) return;
+				let saved: string[] = [];
+				try { saved = JSON.parse(savedRaw); } catch { return; }
+				const yamlSet = new Set(yamlOrder);
+				const merged = saved.filter(n => yamlSet.has(n));
+				yamlOrder.forEach((name, i) => {
+					if (merged.includes(name)) return;
+					let insertAt = 0;
+					for (let j = i - 1; j >= 0; j--) {
+						const idx = merged.indexOf(yamlOrder[j]!);
+						if (idx !== -1) { insertAt = idx + 1; break; }
+					}
+					merged.splice(insertAt, 0, name);
+				});
+				merged.forEach(name => {
 					const el = container.querySelector<HTMLElement>(`[data-category="${name}"]`);
 					if (el) container.appendChild(el);
 				});
+				if (JSON.stringify(merged) !== JSON.stringify(saved)) {
+					localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+				}
 			}
 
 			function insertAdjacent(dragged: HTMLElement, target: HTMLElement, clientY: number) {

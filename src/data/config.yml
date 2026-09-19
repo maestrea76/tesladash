@@ -21,6 +21,20 @@ categories:
         url: https://x.ai/bot
         logo: https://www.google.com/s2/favicons?domain=x.ai&sz=128
 
+  - name: Social Media
+    apps:
+      - name: Instagram
+        url: https://www.instagram.com
+        logo: https://cdn.simpleicons.org/instagram/E4405F
+        color: "#E4405F"
+      - name: TikTok
+        url: https://www.tiktok.com
+        logo: https://cdn.simpleicons.org/tiktok
+        color: "#010101"
+      - name: X
+        url: https://x.com
+        logo: https://cdn.simpleicons.org/x
+
   - name: Información
     apps:
       - name: Diario Vasco
@@ -58,20 +72,6 @@ categories:
         url: https://www.waze.com
         logo: /logos/waze.svg
         fullscreen: false
-
-  - name: Social Media
-    apps:
-      - name: Instagram
-        url: https://www.instagram.com
-        logo: https://cdn.simpleicons.org/instagram/E4405F
-        color: "#E4405F"
-      - name: TikTok
-        url: https://www.tiktok.com
-        logo: https://cdn.simpleicons.org/tiktok
-        color: "#010101"
-      - name: X
-        url: https://x.com
-        logo: https://cdn.simpleicons.org/x
 
   - name: Productividad
     apps:
