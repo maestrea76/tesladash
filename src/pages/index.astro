@@ -1658,22 +1658,12 @@ const categories = await Promise.all(
 			}
 
 			function injectProfile(payload: { user?: string; categories?: { name: string; apps: { name: string; url: string; logo: string; color?: string }[] }[] } | null) {
-				document.querySelectorAll<HTMLElement>('#categories [data-category], #cat-switches [data-cat]').forEach((el) => {
-					const n = (el.dataset.category || el.dataset.cat || '').trim().toLowerCase();
-					if (n === 'hoy me gusto') el.remove();
-				});
 				clearProfileApps();
 				if (!payload) {
 					if (activeProfileUser) adoptGlobalCustomApps(activeProfileUser);
 					activeProfileUser = null;
 					renderCustomApps();
 					return;
-				}
-				if (payload.categories) {
-					payload = {
-						...payload,
-						categories: payload.categories.filter((c) => c.name.trim().toLowerCase() !== 'hoy me gusto'),
-					};
 				}
 				activeProfileUser = payload.user ?? activeProfileUser;
 				if (activeProfileUser) adoptGlobalCustomApps(activeProfileUser);
