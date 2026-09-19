@@ -1762,11 +1762,9 @@ const categories = await Promise.all(
 
 			// Block accidental card navigation when releasing on menu btn
 			container.addEventListener('click', (e) => {
-				const menuBtn = (e.target as Element).closest<HTMLElement>('.card-menu');
-				if (!menuBtn) return;
-				e.preventDefault(); e.stopPropagation();
-				const card = menuBtn.closest<HTMLAnchorElement>('.card');
-				if (card) openEditModal(card);
+				if ((e.target as Element).closest('.card-menu')) {
+					e.preventDefault(); e.stopPropagation();
+				}
 			});
 
 			// ── Add App Form ──
