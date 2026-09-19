@@ -319,6 +319,7 @@ const categories = await Promise.all(
 							<span class="toggle-hint" id="app-fullscreen-hint">Opens in a new tab</span>
 						</label>
 					</div>
+					<p class="form-hint" id="app-save-hint">Se guarda solo en este dispositivo. En el Tesla u otro móvil no aparece; para eso va en el perfil cifrado.</p>
 					<p class="form-error" id="form-error" style="display:none"></p>
 					<div class="form-actions">
 						<button type="button" class="form-btn form-btn-delete" id="app-delete-btn" style="display:none">Delete</button>
@@ -1500,7 +1501,11 @@ const categories = await Promise.all(
 				} catch { return []; }
 			}
 			function saveCustomApps(apps: CustomApp[]) {
-				localStorage.setItem(customStoreKey(), JSON.stringify(apps));
+				try {
+					localStorage.setItem(customStoreKey(), JSON.stringify(apps));
+				} catch {
+					throw new Error('No se pudo guardar en este navegador (almacenamiento bloqueado).');
+				}
 			}
 			function loadHiddenStatic(): string[] {
 				try { return JSON.parse(localStorage.getItem(HIDDEN_STATIC_KEY) || '[]'); }
@@ -1872,26 +1877,30 @@ const categories = await Promise.all(
 				(document.getElementById('form-error') as HTMLElement).style.display = 'none';
 				const appFullscreen = (document.getElementById('app-fullscreen') as HTMLInputElement).checked;
 
-				if (editState) {
-					if (editState.isCustom) {
-						const apps = loadCustomApps();
-						const idx = apps.findIndex(a => a.id === editState!.id);
-						if (idx >= 0) { apps[idx] = { ...apps[idx], name, url, logo, color, category, fullscreen: appFullscreen }; }
-						saveCustomApps(apps);
+				try {
+					if (editState) {
+						if (editState.isCustom) {
+							const apps = loadCustomApps();
+							const idx = apps.findIndex(a => a.id === editState!.id);
+							if (idx >= 0) { apps[idx] = { ...apps[idx], name, url, logo, color, category, fullscreen: appFullscreen }; }
+							saveCustomApps(apps);
+						} else {
+							const hidden = loadHiddenStatic();
+							if (!hidden.includes(editState.originalUrl)) { hidden.push(editState.originalUrl); localStorage.setItem(HIDDEN_STATIC_KEY, JSON.stringify(hidden)); }
+							applyHiddenStatic();
+							const apps = loadCustomApps();
+							apps.push({ id: crypto.randomUUID(), name, url, logo, color, category, fullscreen: appFullscreen });
+							saveCustomApps(apps);
+						}
+						editState = null;
 					} else {
-						// Hide static card and save as custom override
-						const hidden = loadHiddenStatic();
-						if (!hidden.includes(editState.originalUrl)) { hidden.push(editState.originalUrl); localStorage.setItem(HIDDEN_STATIC_KEY, JSON.stringify(hidden)); }
-						applyHiddenStatic();
 						const apps = loadCustomApps();
 						apps.push({ id: crypto.randomUUID(), name, url, logo, color, category, fullscreen: appFullscreen });
 						saveCustomApps(apps);
 					}
-					editState = null;
-				} else {
-					const apps = loadCustomApps();
-					apps.push({ id: crypto.randomUUID(), name, url, logo, color, category, fullscreen: appFullscreen });
-					saveCustomApps(apps);
+				} catch (err) {
+					showFormError(err instanceof Error ? err.message : 'No se pudo guardar.');
+					return;
 				}
 				renderCustomApps();
 				closeModal('modal-add-app');
@@ -2793,6 +2802,13 @@ const categories = await Promise.all(
 		font-size: 0.75rem;
 		color: var(--muted);
 		line-height: 1.3;
+	}
+
+	.form-hint {
+		font-size: 0.75rem;
+		color: var(--muted);
+		line-height: 1.4;
+		margin: 0 0 0.75rem;
 	}
 
 	.form-error {
