@@ -58,6 +58,17 @@ categories:
         url: https://www.waze.com
         logo: /logos/waze.svg
         fullscreen: false
+
+  - name: Social Media
+    apps:
+      - name: Instagram
+        url: https://www.instagram.com
+        logo: https://cdn.simpleicons.org/instagram/E4405F
+        color: "#E4405F"
+      - name: TikTok
+        url: https://www.tiktok.com
+        logo: https://cdn.simpleicons.org/tiktok
+        color: "#010101"
       - name: X
         url: https://x.com
         logo: https://cdn.simpleicons.org/x
@@ -79,10 +90,6 @@ categories:
         url: https://yourHA:8123
         logo: https://cdn.simpleicons.org/homeassistant/41BDF5
         color: "#41BDF5"
-      - name: Instagram
-        url: https://www.instagram.com
-        logo: https://cdn.simpleicons.org/instagram/E4405F
-        color: "#E4405F"
       - name: Outlook
         url: https://outlook.live.com
         logo: https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Microsoft_Outlook_Icon_%282025%E2%80%93present%29.svg/330px-Microsoft_Outlook_Icon_%282025%E2%80%93present%29.svg.png
@@ -95,10 +102,6 @@ categories:
         url: https://web.telegram.org
         logo: /logos/telegram.svg
         color: "#26A5E4"
-      - name: TikTok
-        url: https://www.tiktok.com
-        logo: https://cdn.simpleicons.org/tiktok
-        color: "#010101"
       - name: WhatsApp
         url: https://web.whatsapp.com
         logo: /logos/whatsapp.svg
