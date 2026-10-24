@@ -11,15 +11,16 @@ categories:
       - name: Copilot Studio
         url: https://copilotstudio.microsoft.com
         logo: https://www.google.com/s2/favicons?domain=copilotstudio.microsoft.com&sz=128
+      - name: Cursor
+        url: https://cursor.com/
+        logo: /logos/cursor.png
+        color: "#26251e"
       - name: Gemini
         url: https://gemini.google.com
         logo: https://www.google.com/s2/favicons?domain=gemini.google.com&sz=128
       - name: Grok
         url: https://grok.com
         logo: https://www.google.com/s2/favicons?domain=grok.com&sz=128
-      - name: GrokBot
-        url: https://x.ai/bot
-        logo: https://www.google.com/s2/favicons?domain=x.ai&sz=128
 
   - name: Social Media
     apps:
