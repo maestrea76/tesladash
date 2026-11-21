@@ -316,6 +316,10 @@ categories:
         url: https://orangetv.orange.es/brw
         logo: https://www.google.com/s2/favicons?domain=orangetv.orange.es&sz=128
         color: "#FF6600"
+      - name: GigaPlay
+        url: https://gigaplay.app/app
+        logo: /logos/gigaplay.svg
+        color: "#131316"
       - name: Prime Video
         url: https://www.primevideo.com
         logo: /logos/prime-video.svg
